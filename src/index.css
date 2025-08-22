@@ -1,0 +1,21 @@
+:root {
+  /* Altera a cor do ÍCONE para notificações de sucesso */
+  --toastify-icon-color-success: #28a745; /* Um verde personalizado */
+
+  /* Altera a cor do ÍCONE para notificações de erro */
+  --toastify-icon-color-error: #dc3545; /* Um vermelho personalizado */
+
+  /* DICA: Você também pode alterar a cor de fundo e da barra de progresso */
+  
+  /* Cor de fundo do toast de sucesso */
+  --toastify-color-success: #eaf6ec; 
+
+  /* Cor da barra de progresso do toast de sucesso */
+  --toastify-color-progress-success: var(--toastify-icon-color-success);
+
+  /* Cor de fundo do toast de erro */
+  --toastify-color-error: #fdecea;
+
+  /* Cor da barra de progresso do toast de erro */
+  --toastify-color-progress-error: var(--toastify-icon-color-error);
+}
