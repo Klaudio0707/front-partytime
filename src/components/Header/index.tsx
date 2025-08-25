@@ -1,28 +1,32 @@
 import { Link, NavLink } from 'react-router-dom';
 import styles from './Header.module.css';
-import { useAuth } from '../../context/AuthContext';  // 1. Importe o hook useAuth
+import { useAuth } from '../../context/AuthContext';
 
 const Header = () => {
-  // 2. Obtenha o usuário e a função de logout do contexto
   const { user, logout } = useAuth();
 
   return (
     <header className={styles.header}>
+      {/* O logo sempre leva para a Home pública */}
       <Link to="/" className={styles.brand}>
         Party Time!
       </Link>
       <nav>
         <ul className={styles.nav_list}>
-          {/* 3. Lógica de renderização condicional */}
           {user ? (
-            // Se o usuário ESTIVER logado
+            // --- MENU DE USUÁRIO LOGADO ---
             <>
               <li>
-                <NavLink to="/">Minhas Festas</NavLink>
+                {/* Link para o painel de controle privado */}
+                <NavLink to="/dashboard">Dashboard</NavLink>
               </li>
-             
               <li>
-                <span>Olá, {user.username?user.username :user.email}!</span>
+                <NavLink to="/party/new" className={styles.btn}>
+                  Criar Festa
+                </NavLink>
+              </li>
+              <li>
+                <span>Olá, {user.email}!</span>
               </li>
               <li>
                 <button onClick={logout} className={styles.btn_secondary}>
@@ -31,7 +35,7 @@ const Header = () => {
               </li>
             </>
           ) : (
-            // Se o usuário NÃO ESTIVER logado
+            // --- MENU DE VISITANTE ---
             <>
               <li>
                 <NavLink to="/login">Entrar</NavLink>

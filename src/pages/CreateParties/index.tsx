@@ -12,32 +12,38 @@ const CreateParty = () => {
   const [description, setDescription] = useState('');
   const [budget, setBudget] = useState('');
   const [image, setImage] = useState('');
-  
+  const [date, setDate] = useState('');
   const navigate = useNavigate(); // Hook para redirecionar o usuário
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // --- Função para lidar com o envio do formulário ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Impede o recarregamento padrão da página
 
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     // Monta o objeto de dados que será enviado para a API
     const partyData = {
       title,
       description,
-      budget: Number(budget), // Converte o orçamento para o tipo número
+      budget: Number(budget),
       image,
+      date,
       services: [],
     };
 
     try {
-      // Faz a requisição POST para o endpoint do backend
-      await apiFetch.post('/parties', partyData);
+      const response = await apiFetch.post('/parties', partyData);
+      const newPartyId = response.data.id;
 
       useToast('Festa criada com sucesso!', 'success');
-      navigate('/'); // Redireciona para a página inicial após sucesso
+      navigate(`/party/${newPartyId}`); // Redireciona para os detalhes da nova festa
     } catch (error: any) {
-      // Exibe uma notificação de erro
-      const errorMessage = error.response?.data?.message || 'Erro ao criar a festa, tente novamente.';
+      const errorMessage = error.response?.data?.message || 'Erro ao criar a festa.';
       useToast(errorMessage, 'error');
+    } finally {
+      // 👇 3. REATIVE O BOTÃO, NÃO IMPORTA SE DEU CERTO OU ERRADO
+      setIsSubmitting(false);
     }
   };
 
@@ -55,6 +61,15 @@ const CreateParty = () => {
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+          />
+        </label>
+        <label>
+          <span>Data da Festa:</span>
+          <input
+            type="date"
+            required
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
           />
         </label>
         <label>
@@ -87,7 +102,9 @@ const CreateParty = () => {
             onChange={(e) => setImage(e.target.value)}
           />
         </label>
-        <button type="submit" className={styles.btnCreateParty}>Criar Festa</button>
+        <button type="submit" className="btn" disabled={isSubmitting}>
+          {isSubmitting ? 'Criando festa...' : 'Criar Festa'}
+        </button>
       </form>
     </div>
   );

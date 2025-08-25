@@ -1,0 +1,86 @@
+.dashboard {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.summary_card {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.summary_card h3 {
+  font-size: 2.5rem;
+  margin: 0;
+  color: #007bff;
+}
+
+.summary_card p {
+  margin: 0.5rem 0 0;
+  color: #666;
+}
+
+.parties_list h2 {
+  margin-bottom: 1.5rem;
+}
+
+.parties_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.party_card {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.party_card h3 {
+  margin: 0 0 1rem;
+}
+
+.party_info {
+  margin: 0.25rem 0;
+  color: #555;
+}
+
+.card_link {
+  margin-top: auto; /* Empurra o link para o final do card */
+  padding-top: 1rem;
+  text-align: right;
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.empty_dashboard {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}

@@ -3,7 +3,7 @@ import api from '../../api/config';
 import { useEffect, useState } from 'react';
 import useToast from '../../hooks/useToast';
 import type { IEvento } from '../../types/IEvento';
-import BtnCreatePartie from '../../components/BtnCreatePartie';
+// import BtnCreatePartie from '../../components/BtnCreatePartie';
 
 const Home = () => {
   const [eventos, setEventos] = useState<IEvento[]>([]);
@@ -31,7 +31,7 @@ const Home = () => {
   return (
     <main className={styles.container}>
       <h2 className={styles.title_home}>PartyTime</h2>
-      <BtnCreatePartie/>
+      {/* <BtnCreatePartie/> */}
       <section className={styles.container_eventos}>
         <h4 className={styles.title_eventos}>Eventos em Destaques</h4>
         {loading ? (

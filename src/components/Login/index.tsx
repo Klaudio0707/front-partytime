@@ -20,7 +20,7 @@ const Login = () => {
                 password,
             });
             useToast('Login realizado com sucesso!');
-            navigate('/');
+            navigate('/dashboard');
         } catch (error: any) {
             const errorMessage = error.response?.data?.message || 'Erro, tente novamente';
             useToast(errorMessage, 'error');
