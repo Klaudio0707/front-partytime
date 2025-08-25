@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(userResponse.data);
         
         useToast("Login bem-sucedido!");
-        navigate("/");
+        navigate("/home");
     };
 
     const logout = async () => {
