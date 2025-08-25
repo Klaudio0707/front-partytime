@@ -27,22 +27,21 @@
   }
   
   /* Lista de eventos */
-  ul {
+  styles.container {
     list-style: none;
     padding: 0;
   }
   
-  li {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  .containerEvento{
+   display: flex;
+   margin: 0;
+   padding: 10px;
+   flex-direction: column;
+   flex-wrap: wrap;
   }
   
   /* Título do evento */
-  li h5 {
+  .titleEvento{
     font-size: 1.2rem;
     color: #222;
     margin-bottom: 10px;

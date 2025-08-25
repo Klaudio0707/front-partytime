@@ -25,6 +25,7 @@ const CreateParty = () => {
       description,
       budget: Number(budget), // Converte o orçamento para o tipo número
       image,
+      services: [],
     };
 
     try {

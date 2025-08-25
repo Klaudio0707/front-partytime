@@ -3,6 +3,9 @@ export interface IEvento {
     title: string;
     budget: string;
     description: string;
-    author: string;
+    user: {
+      id: string;
+      username: string;
+    };
     image: string;
   }

@@ -35,15 +35,15 @@ const Home = () => {
         {loading ? (
           <p>Carregando...</p>
         ) : (
-          <ul>
+          <ul className={styles.containerEvento}>
             {eventos.map((evento) => (
-              <li key={evento.id || evento.title}> 
-                <h5>{evento.title || 'Título não disponível'}</h5>
-                <p>{evento.budget || 'Orçamento não informado'}</p>
-                <p>{evento.description || 'Descrição não disponível'}</p>
-                <p>{evento.author || 'Autor desconhecido'}</p>
+              <li className={styles.evento} key={evento.id || evento.title}> 
+                <h5 className={styles.titleEvento}>{evento.title || 'Título não disponível'}</h5>
+                <p className={styles.budgetEvento}>R${evento.budget || 'Orçamento não informado'}</p>
+                <p className={styles.descriptionEvento}>{evento.description || 'Descrição não disponível'}</p>
+                <p className={styles.authorEvento}>{evento.user?.username || 'Autor desconhecido'}</p>
                 {evento.image ? (
-                  <img src={evento.image} alt={evento.description || 'Imagem da festa'} />
+                  <img className={styles.imageEvento} src={evento.image} alt={evento.description || 'Imagem da festa'} />
                 ) : (
                   <p>Imagem não disponível</p>
                 )}
