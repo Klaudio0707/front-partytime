@@ -4,4 +4,4 @@ export interface IUser{
   username: string;
   password: string;
   // Adicione aqui qualquer outro campo que seu backend retorna sobre o usuário
-}
+} 
