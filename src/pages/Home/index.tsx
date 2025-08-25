@@ -12,7 +12,10 @@ const Home = () => {
     const fetchEventos = async () => {
       try {
         const response = await api.get('/parties');
+        const err = response.data?.error
+        console.log(err)
         const data = Array.isArray(response.data) ? response.data : []; // Garante que seja um array
+        console.log(data)
         setEventos(data);
       } catch (error: any) {
         const errorMessage = error.response?.data?.message || 'Erro ao carregar eventos, tente novamente';

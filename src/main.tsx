@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css'; 
 import Login from './components/Login';
 import Register from './components/Register';
+import CreateParty from './pages/CreateParties/index.tsx';
 
 
 const router = createBrowserRouter([
@@ -14,13 +15,18 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/',          
+        path: '/home',          
         element: <Home />,
       },
        {
         path: '/register', 
         element: <Register />,
       },
+      {
+       path:'/partie/new',
+       element: <CreateParty />
+        
+       },
       {
         path: '/login',
         element: <Login />,
