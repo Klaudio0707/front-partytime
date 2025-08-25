@@ -3,6 +3,7 @@ import api from '../../api/config';
 import { useEffect, useState } from 'react';
 import useToast from '../../hooks/useToast';
 import type { IEvento } from '../../types/IEvento';
+import BtnCreatePartie from '../../components/BtnCreatePartie';
 
 const Home = () => {
   const [eventos, setEventos] = useState<IEvento[]>([]);
@@ -30,20 +31,23 @@ const Home = () => {
   return (
     <main className={styles.container}>
       <h2 className={styles.title_home}>PartyTime</h2>
+      <BtnCreatePartie/>
       <section className={styles.container_eventos}>
         <h4 className={styles.title_eventos}>Eventos em Destaques</h4>
         {loading ? (
           <p>Carregando...</p>
         ) : (
-          <ul className={styles.containerEvento}>
+          <ul className={styles.eventos_grid}>
             {eventos.map((evento) => (
               <li className={styles.evento} key={evento.id || evento.title}> 
-                <h5 className={styles.titleEvento}>{evento.title || 'Título não disponível'}</h5>
+                <h5 className={styles.titleEvento}>Título: {evento.title || 'Título não disponível'}</h5>
                 <p className={styles.budgetEvento}>R${evento.budget || 'Orçamento não informado'}</p>
-                <p className={styles.descriptionEvento}>{evento.description || 'Descrição não disponível'}</p>
-                <p className={styles.authorEvento}>{evento.user?.username || 'Autor desconhecido'}</p>
+                <p className={styles.descriptionEvento}>Descrição: {evento.description || 'Descrição não disponível'}</p>
+                <p className={styles.authorEvento}>Autor: {evento.user?.username || 'Autor desconhecido'}</p>
                 {evento.image ? (
-                  <img className={styles.imageEvento} src={evento.image} alt={evento.description || 'Imagem da festa'} />
+                  <a href={evento.image} target="_blank" rel="noopener noreferrer">
+                    <img className={styles.imageEvento} src={evento.image} alt={evento.description || 'Imagem da festa'} />
+                  </a>
                 ) : (
                   <p>Imagem não disponível</p>
                 )}

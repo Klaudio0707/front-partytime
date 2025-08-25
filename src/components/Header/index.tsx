@@ -18,15 +18,11 @@ const Header = () => {
             // Se o usuário ESTIVER logado
             <>
               <li>
-                <NavLink to="/home">Minhas Festas</NavLink>
+                <NavLink to="/">Minhas Festas</NavLink>
               </li>
+             
               <li>
-                <NavLink to="/party/new" className={styles.btn}>
-                  Criar Festa
-                </NavLink>
-              </li>
-              <li>
-                <span>Olá, {user.username}!</span>
+                <span>Olá, {user.username?user.username :user.email}!</span>
               </li>
               <li>
                 <button onClick={logout} className={styles.btn_secondary}>

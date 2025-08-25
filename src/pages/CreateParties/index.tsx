@@ -87,7 +87,7 @@ const CreateParty = () => {
             onChange={(e) => setImage(e.target.value)}
           />
         </label>
-        <button type="submit" className="btn">Criar Festa</button>
+        <button type="submit" className={styles.btnCreateParty}>Criar Festa</button>
       </form>
     </div>
   );

@@ -32,16 +32,28 @@
     padding: 0;
   }
   
-  .containerEvento{
-   display: flex;
-   margin: 0;
-   padding: 10px;
-   flex-direction: column;
-   flex-wrap: wrap;
-  }
+.eventos_grid {
+  display: grid;
+  /* A mágica principal acontece aqui: 3 colunas de tamanho igual */
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 1.5rem; /* Cria um espaçamento perfeito entre os itens */
   
-  /* Título do evento */
-  .titleEvento{
+  /* Apenas para resetar o estilo padrão da lista */
+  list-style: none;
+  padding: 0;
+}
+
+/* Estilo para cada item da lista (opcional, mas bom para design) */
+.eventos_grid li {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background-color: #fff;
+}
+
+/* Título do evento */
+.titleEvento{
     font-size: 1.2rem;
     color: #222;
     margin-bottom: 10px;
