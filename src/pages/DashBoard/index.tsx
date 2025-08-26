@@ -8,7 +8,7 @@ interface IParty {
   id: string;
   title: string;
   date: string;
-  budget: string | null; // O orçamento pode ser nulo
+  budget: string | null;
   services: unknown[];
 }
 
@@ -21,7 +21,6 @@ const Dashboard = () => {
       try {
         const response = await apiFetch.get('/parties/my-parties');
         setParties(response.data);
-        console.log(response.data)
       } catch (error) {
         useToast('Erro ao carregar suas festas.', 'error');
       } finally {
@@ -31,25 +30,23 @@ const Dashboard = () => {
     fetchUserParties();
   }, []);
 
-  // --- CÁLCULOS SEGUROS E MEMORIZADOS com useMemo ---
-  // useMemo evita que os cálculos sejam refeitos em toda renderização
   const summaryData = useMemo(() => {
     const totalBudget = parties.reduce((sum, party) => {
-      // ✅ Lógica segura: Se o budget for inválido, soma 0
       const budgetValue = parseFloat(party.budget || '0');
       return sum + budgetValue;
     }, 0);
-
     return {
       partyCount: parties.length,
       totalBudget: totalBudget,
     };
-  }, [parties]); // Recalcula apenas quando a lista de 'parties' mudar
+  }, [parties]);
 
+  // 1. PRIMEIRO, CUIDAMOS DO ESTADO DE CARREGAMENTO
   if (loading) {
     return <div className={styles.loading_container}>Carregando seu painel...</div>;
   }
 
+  // 2. DEPOIS, CUIDAMOS DO ESTADO VAZIO (SE NÃO ESTIVER CARREGANDO E NÃO HOUVER FESTAS)
   if (parties.length === 0) {
     return (
       <div className={styles.empty_dashboard}>
@@ -62,6 +59,7 @@ const Dashboard = () => {
     );
   }
 
+  // 3. SE PASSOU PELAS VERIFICAÇÕES, MOSTRAMOS O DASHBOARD COMPLETO
   return (
     <div className={styles.dashboard}>
       <div className={styles.header}>
@@ -73,11 +71,10 @@ const Dashboard = () => {
 
       <section className={styles.summary}>
         <div className={styles.summary_card}>
-          <h3>{summaryData.partyCount}</h3> {/* Usa o valor calculado */}
+          <h3>{summaryData.partyCount}</h3>
           <p>Festas Planejadas</p>
         </div>
         <div className={styles.summary_card}>
-          {/* ✅ Formatação de moeda profissional */}
           <h3>
             {summaryData.totalBudget.toLocaleString('pt-BR', {
               style: 'currency',
@@ -96,7 +93,7 @@ const Dashboard = () => {
               <div className={styles.party_card}>
                 <h3>{party.title}</h3>
                 <p className={styles.party_info}>
-                  <strong>Data:</strong> {new Date(party.date).toLocaleDateString()}
+                  <strong>Data:</strong> {new Date(party.date).toLocaleDateString('pt-BR')}
                 </p>
                 <p className={styles.party_info}>
                   <strong>Orçamento:</strong> {parseFloat(party.budget || '0').toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}

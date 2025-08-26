@@ -1,91 +1,11 @@
-/* src/pages/Login/Login.module.css */
-
-.login_page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  min-height: 60vh;
-  background-color: #f9f9f9;
-}
-
-.form {
-  background-color: #ffffff;
-  padding: 2.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 400px;
-}
-
-.title {
-  font-size: 2.2rem;
-  color: #333;
+.register_link {
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  color: var(--text-color-light);
 }
 
-.input_group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.input_group label {
+.register_link a {
+  color: var(--primary-color);
   font-weight: 600;
-  color: #555;
-}
-
-.input_group input {
-  padding: 0.9rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.input_group input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-}
-
-.button {
-  padding: 1rem;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.button:hover {
-  background-color: #0056b3;
-}
-
-.button:disabled {
-  background-color: #a0a0a0;
-  cursor: not-allowed;
-}
-.buttonRegister {
-  padding: 1rem;
-  border: 1px solid #ddd; /* Borda sutil */
-  border-radius: 5px;
-  background-color: #f0f0f0; /* Fundo diferente do principal */
-  color: #333;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.buttonRegister:hover {
-  background-color: #e0e0e0;
+  text-decoration: none;
 }

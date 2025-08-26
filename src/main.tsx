@@ -17,6 +17,8 @@ import PartyDetails from './pages/PartyDetails';
 import EditParty from './pages/EditParty';
 import ProtectedRoute from './components/ProtectedRoute'; // 👈 2. Importe a Rota Protegida
 import EditService from './pages/EditService/index.tsx';
+import RsvpPage from './pages/RsvpPage/index.tsx';
+import Profile from './pages/Profile';
 
 const router = createBrowserRouter([
   {
@@ -61,6 +63,14 @@ const router = createBrowserRouter([
             path: '/service/edit/:id',
             element: <EditService />,
           },
+           {
+             path: '/rsvp/:token',
+             element: <RsvpPage />,
+           },{
+
+             path: '/profile',
+              element: <Profile />,
+            },
         ],
       },
     ],

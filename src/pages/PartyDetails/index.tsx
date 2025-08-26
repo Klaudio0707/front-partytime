@@ -15,7 +15,8 @@ interface IService {
 interface IGuest {
   id: string;
   name: string;
-  email: string;
+  rsvpToken?: string;
+  phone?: string;
   status: string; // Ex: 'Pendente', 'Enviado'
 }
 interface IParty {
@@ -25,7 +26,7 @@ interface IParty {
   date: string; // Adicionamos a data
   budget: string; // Vem como string da API
   services: IService[];
-  guests: IGuest[]; 
+  guests: IGuest[];
 }
 
 const PartyDetails = () => {
@@ -95,7 +96,38 @@ const PartyDetails = () => {
       }
     }
   };
+  const handleDeleteGuest = async (guestId: string) => {
+    if (window.confirm('Tem certeza que deseja remover este convidado da lista?')) {
+      try {
+        await apiFetch.delete(`/guests/${guestId}`);
+        useToast('Convidado removido com sucesso!', 'success');
+        fetchParty(); // Recarrega os dados da festa
+      } catch (error: any) {
+        useToast(error.response?.data?.message || 'Erro ao remover convidado.', 'error');
+      }
+    }
+  };
+  const handleWhatsAppInvite = (guest: IGuest) => {
+    if (!guest.phone) {
+      useToast('Este convidado não tem um número de telefone cadastrado.', 'warning');
+      return;
+    }
+    if (!guest.rsvpToken) {
+      useToast('Este convite é antigo e não possui um link de confirmação.', 'warning');
+      return;
+    }
+    if (!party) return;
 
+    // 👇 A LÓGICA DO LINK FOI ATUALIZADA AQUI 👇
+    const rsvpUrl = `http://localhost:5173/rsvp/${guest.rsvpToken}`; // Use a URL do seu frontend
+    const message = `Olá ${guest.name}! Você foi convidado para a festa "${party.title}". Por favor, confirme sua presença e veja os detalhes no link: ${rsvpUrl}`;
+
+    const phoneNumber = `55${guest.phone.replace(/\D/g, '')}`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+    window.open(whatsappUrl, '_blank');
+  };
   const handleGuestAdded = () => {
     fetchParty(); // Simplesmente recarrega os dados da festa
   };
@@ -110,7 +142,6 @@ const PartyDetails = () => {
 
   return (
     <div className={styles.party_details}>
-      
       <Link to="/dashboard" className={styles.back_link}>&larr; Voltar para o Dashboard</Link>
       
       <header className={styles.party_header}>
@@ -120,76 +151,58 @@ const PartyDetails = () => {
       </header>
       
       <div className={styles.financial_summary}>
-        <div className={styles.summary_card}>
-          <h3>Orçamento Total</h3>
-          <p>{parseFloat(party.budget || '0').toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-        </div>
-        <div className={styles.summary_card}>
-          <h3>Total Gasto</h3>
-          <p>{financialSummary.spentBudget.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-        </div>
-        <div className={`${styles.summary_card} ${financialSummary.remainingBudget < 0 ? styles.negative_balance : ''}`}>
-          <h3>Saldo Restante</h3>
-          <p>{financialSummary.remainingBudget.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-        </div>
+        {/* ... (painel financeiro) ... */}
       </div>
       
       <div className={styles.services_container}>
         <h2>Serviços Contratados:</h2>
+        <AddServiceForm partyId={id!} onServiceAdded={handleServiceAdded} />
         {party.services.length > 0 ? (
-          <ul className={styles.service_list}>
+          <ul className={styles.item_list}>
             {party.services.map((service) => (
-              <li key={service.id} className={styles.service_item}>
-                <div className={styles.service_info}>
+              <li key={service.id} className={styles.item}>
+                <div className={styles.item_info}>
                   <span>{service.name}</span>
-                  <span>{parseFloat(service.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                  <small>{parseFloat(service.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</small>
                 </div>
-                <Link to={`/service/edit/${service.id}`} className={styles.edit_btn}>Editar</Link>
-                <button onClick={() => handleDeleteService(service.id)} className={styles.delete_btn}>Excluir</button>
+                <div className={styles.item_actions}>
+                  <Link to={`/service/edit/${service.id}`} className={styles.edit_btn}>Editar</Link>
+                  <button onClick={() => handleDeleteService(service.id)} className={styles.delete_btn}>Excluir</button>
+                </div>
               </li>
             ))}
           </ul>
-        ) : (
-          <p>Nenhum serviço contratado ainda.</p>
-        )}
+        ) : <p>Nenhum serviço adicionado ainda.</p>}
       </div>
 
-      <div className={styles.add_service_container}>
-        <h2>Adicionar um Novo Serviço:</h2>
-        <AddServiceForm partyId={id!} onServiceAdded={handleServiceAdded} />
+      <div className={styles.guests_container}>
+        <h2>Convidados:</h2>
+        <AddGuestForm partyId={id!} onGuestAdded={handleGuestAdded} />
+        <h3>Lista de Convidados ({party.guests.length})</h3>
+        {party.guests.length > 0 ? (
+          <ul className={styles.item_list}>
+            {party.guests.map((guest) => (
+              <li key={guest.id} className={styles.item}>
+                <div className={styles.item_info}>
+                  <span>{guest.name}</span>
+                  <small>{guest.phone}</small>
+                </div>
+                <div className={styles.item_actions}>
+                  <span className={`${styles.status_badge} ${styles[guest.status.toLowerCase()]}`}>{guest.status}</span>
+                  {guest.phone && <button onClick={() => handleWhatsAppInvite(guest)} className={styles.whatsapp_btn}>WhatsApp</button>}
+                  <button onClick={() => handleDeleteGuest(guest.id)} className={styles.delete_btn}>Remover</button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : <p>Nenhum convidado adicionado ainda.</p>}
       </div>
 
       <div className={styles.actions_container}>
         <h2>Ações da Festa:</h2>
-        <Link to={`/party/edit/${id}`} className="btn">Editar Festa</Link>
-        
-        <button onClick={handleDeleteParty} className={styles.delete_party_btn}>Excluir Festa</button>
-      </div>
-      <div className={styles.guests_container}>
-        <h2>Convidados:</h2>
-        
-        {/* Formulário para adicionar novos convidados */}
-        <AddGuestForm partyId={id!} onGuestAdded={handleGuestAdded} />
-        
-        {/* Lista de convidados já adicionados */}
-        <h3>Lista de Convidados:</h3>
-        {party.guests.length > 0 ? (
-          <ul className={styles.guest_list}>
-            {party.guests.map((guest) => (
-              <li key={guest.id} className={styles.guest_item}>
-                <div className={styles.guest_info}>
-                  <span>{guest.name}</span>
-                  <small>{guest.email}</small>
-                </div>
-                <span className={`${styles.status_badge} ${styles[guest.status.toLowerCase()]}`}>
-                  {guest.status}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>Nenhum convidado adicionado ainda.</p>
-        )}
+        <Link to={`/party/edit/${party.id}`} className="btn">Editar Festa</Link>
+        {/* Usa a classe global 'btn' e a de módulo para cor específica */}
+        <button onClick={handleDeleteParty} className={`btn ${styles.delete_party_btn}`}>Excluir Festa</button>
       </div>
     </div>
   );

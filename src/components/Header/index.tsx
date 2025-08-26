@@ -6,8 +6,7 @@ const Header = () => {
   const { user, logout } = useAuth();
 
   return (
-    <header className={styles.header}>
-      {/* O logo sempre leva para a Home pública */}
+   <header className={styles.header}>
       <Link to="/" className={styles.brand}>
         Party Time!
       </Link>
@@ -17,19 +16,24 @@ const Header = () => {
             // --- MENU DE USUÁRIO LOGADO ---
             <>
               <li>
-                {/* Link para o painel de controle privado */}
-                <NavLink to="/dashboard">Dashboard</NavLink>
+                <NavLink to="/dashboard" className={({isActive}) => isActive ? `${styles.link} ${styles.active}` : styles.link}>
+                  Dashboard
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/party/new" className={styles.btn}>
+                {/* Usando classe global 'btn' */}
+                <NavLink to="/party/new" className="btn">
                   Criar Festa
                 </NavLink>
               </li>
               <li>
-                <span>Olá, {user.email}!</span>
+                <NavLink to={`profile/${user.id}`}>
+                  <span className={styles.welcome_text}>Olá, {user.username}!</span>
+                </NavLink>
               </li>
               <li>
-                <button onClick={logout} className={styles.btn_secondary}>
+                {/* Usando classe global 'btn-secondary' */}
+                <button onClick={logout} className="btn-secondary">
                   Sair
                 </button>
               </li>
@@ -38,10 +42,13 @@ const Header = () => {
             // --- MENU DE VISITANTE ---
             <>
               <li>
-                <NavLink to="/login">Entrar</NavLink>
+                <NavLink to="/login" className={({isActive}) => isActive ? `${styles.link} ${styles.active}` : styles.link}>
+                  Entrar
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/register" className={styles.btn}>
+                {/* Usando classe global 'btn' */}
+                <NavLink to="/register" className="btn">
                   Criar Conta
                 </NavLink>
               </li>

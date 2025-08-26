@@ -1,4 +1,16 @@
 :root {
+  --primary-color: #6a1b9a; /* Um roxo elegante para a marca */
+  --primary-color-dark: #4a148c;
+  --secondary-color: #fdd835; /* Amarelo para botões de destaque */
+  --background-color: #f7f8fc; /* Fundo principal da aplicação, um cinza bem claro */
+  --surface-color: #ffffff;   /* Fundo de cards, formulários e do header */
+  --text-color: #212121;       /* Cor principal do texto */
+  --text-color-light: #616161;
+  --border-color: #eeeeee;
+  --error-color: #d32f2f;
+  
+  --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
   /* Altera a cor do ÍCONE para notificações de sucesso */
   --toastify-icon-color-success: #28a745; /* Um verde personalizado */
 
@@ -18,4 +30,150 @@
 
   /* Cor da barra de progresso do toast de erro */
   --toastify-color-progress-error: var(--toastify-icon-color-error);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* 3. Estilos de Botões Globais */
+.btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.btn-secondary {
+  background-color: var(--surface-color);
+  color: var(--text-color-light);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--background-color);
+  border-color: #ccc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+
+
+
+
+
+
+
+
+
+
+.form_page_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 70vh;
+}
+
+/* O card do formulário em si */
+.form_card {
+  background-color: var(--surface-color);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 450px;
+  border: 1px solid var(--border-color);
+}
+
+.form_title {
+  font-size: 2rem;
+  color: var(--text-color);
+  text-align: center;
+  margin: 0;
+}
+
+.form_subtitle {
+  text-align: center;
+  color: var(--text-color-light);
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+}
+
+/* Grupo que envolve o label e o input */
+.input_group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.input_group label {
+  font-weight: 500;
+  color: var(--text-color-light);
+}
+
+/* Estilo padrão para todos os inputs e textareas */
+.input_field,
+.textarea_field {
+  width: 100%;
+  padding: 0.9rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: var(--font-family);
+  background-color: #fcfdff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.textarea_field {
+  height: 120px;
+  resize: vertical;
+}
+
+.input_field:focus,
+.textarea_field:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.15);
+}
+
+/* Modificador para erro */
+.input_error {
+  border-color: var(--error-color) !important;
+}
+
+.input_error:focus {
+  box-shadow: 0 0 0 3px rgba(176, 0, 32, 0.15) !important;
+}
+
+/* Mensagem de erro */
+.error_message {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin: 0;
 }

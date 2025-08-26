@@ -10,7 +10,7 @@ function App() {
    <AuthProvider>
       <ToastContainer />
       <Header />
-      <main>
+      <main className="container">
         <Outlet />
       </main>
     </AuthProvider>

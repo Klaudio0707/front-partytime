@@ -1,92 +1,52 @@
-/* Adicione ou modifique estes estilos no seu arquivo */
-
-.service_item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.8rem;
-  border-bottom: 1px solid #eee;
-}
-
-.service_info {
-  display: flex;
-  flex-direction: column;
-}
-
-.service_info span:first-child {
-  font-weight: bold;
-}
-
-.service_info span:last-child {
-  color: #555;
-  font-size: 0.9rem;
-}
-
-.delete_btn {
-  padding: 0.4rem 0.8rem;
-  border-radius: 5px;
-  border: 1px solid #dc3545;
-  background-color: transparent;
-  color: #dc3545;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.delete_btn:hover {
-  background-color: #dc3545;
-  color: #fff;
-}
-
-/* Adicione estes novos estilos ao seu arquivo */
-
-.actions_container {
+.party_details {
+  background-color: var(--surface-color);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
   margin-top: 2rem;
+}
+
+.back_link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.party_header h1 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.party_date, .party_description {
+  color: var(--text-color-light);
+  margin-top: 0;
+}
+
+.financial_summary, .services_container, .guests_container, .actions_container {
+  margin-top: 2.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #eee;
-  text-align: left;
+  border-top: 1px solid var(--border-color);
 }
 
-.actions_container h2 {
-  margin-bottom: 1rem;
-}
-
-.delete_party_btn {
-  padding: 0.6rem 1.2rem;
-  border-radius: 5px;
-  border: none;
-  background-color: #dc3545; /* Cor vermelha para indicar perigo */
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.delete_party_btn:hover {
-  background-color: #c82333;
-}
 .financial_summary {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
-  margin: 2rem 0;
-  padding: 1.5rem 0;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
 }
 
 .summary_card {
-  background-color: #f9f9f9;
+  background-color: var(--background-color);
   padding: 1.5rem;
   border-radius: 8px;
   text-align: center;
-  border: 1px solid #eee;
 }
 
 .summary_card h3 {
   margin: 0 0 0.5rem;
   font-size: 1rem;
-  color: #666;
+  color: var(--text-color-light);
   font-weight: 500;
 }
 
@@ -94,53 +54,81 @@
   margin: 0;
   font-size: 1.8rem;
   font-weight: bold;
-  color: #333;
+  color: var(--primary-color);
 }
 
-/* Estilo para quando o saldo for negativo */
 .negative_balance p {
-  color: #dc3545; /* Vermelho para indicar perigo/saldo estourado */
-}
-.guests_container {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #eee;
+  color: var(--error-color);
 }
 
-.guests_container h2 {
-  margin-bottom: 1rem;
-}
-.guests_container h3 {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  color: #555;
-}
-
-.guest_list {
+.item_list {
   list-style: none;
   padding: 0;
 }
 
-.guest_item {
+.item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.guest_info {
+.item_info {
   display: flex;
   flex-direction: column;
 }
 
-.guest_info span {
-  font-weight: bold;
+.item_info span {
+  font-weight: 500;
 }
 
-.guest_info small {
-  color: #777;
+.item_info small {
+  color: var(--text-color-light);
+}
+
+.item_actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit_btn, .delete_btn, .whatsapp_btn {
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+}
+
+.edit_btn {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.edit_btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.delete_btn {
+  color: var(--error-color);
+  border-color: var(--error-color);
+}
+.delete_btn:hover {
+  background-color: var(--error-color);
+  color: white;
+}
+
+.whatsapp_btn {
+  background-color: #25D366;
+  color: white;
+  border-color: #25D366;
+}
+.whatsapp_btn:hover {
+  background-color: #128C7E;
+  border-color: #128C7E;
 }
 
 .status_badge {
@@ -149,19 +137,18 @@
   font-size: 0.8rem;
   font-weight: bold;
   color: #fff;
-  text-transform: capitalize;
 }
+/* Cores específicas de status */
+.pendente { background-color: #ffc107; color: #333; }
+.enviado { background-color: #17a2b8; }
+.confirmado { background-color: #28a745; }
+.recusado { background-color: var(--error-color); }
 
-.status_badge.pendente {
-  background-color: #ffc107; /* Amarelo */
-  color: #333;
+
+.delete_party_btn {
+  /* Usa a classe global .btn, mas podemos adicionar uma cor específica */
+  background-color: var(--error-color);
 }
-.status_badge.enviado {
-  background-color: #17a2b8; /* Azul */
-}
-.status_badge.confirmado {
-  background-color: #28a745; /* Verde */
-}
-.status_badge.recusado {
-  background-color: #dc3545; /* Vermelho */
+.delete_party_btn:hover {
+  background-color: #9a0007;
 }

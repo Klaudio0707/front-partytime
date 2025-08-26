@@ -1,31 +1,36 @@
-
 .register_page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  min-height: 60vh;
-  background-color: #f9f9f9;
+  min-height: 70vh;
 }
 
 .form {
-  background-color: #ffffff;
+  background-color: var(--surface-color);
   padding: 2.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem; /* Espaçamento ajustado */
   width: 100%;
-  max-width: 400px;
+  max-width: 450px; /* Um pouco maior para mais campos */
 }
 
 .title {
-  font-size: 2.2rem;
-  color: #333;
+  font-size: 2rem;
+  color: var(--text-color);
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin: 0;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-color-light);
+  margin-top: -0.8rem;
+  margin-bottom: 1rem;
 }
 
 .input_group {
@@ -35,41 +40,48 @@
 }
 
 .input_group label {
-  font-weight: 600;
-  color: #555;
+  font-weight: 500;
+  color: var(--text-color-light);
 }
 
 .input_group input {
   padding: 0.9rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   font-size: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  font-family: var(--font-family);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input_group input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.15);
 }
 
-.button {
-  padding: 1rem;
-  border: none;
-  border-radius: 5px;
-  background-color: #28a745; /* Verde para 'criar' */
-  color: white;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.input_error {
+  border-color: var(--error-color);
 }
 
-.button:hover {
-  background-color: #218838;
+.input_error:focus {
+  outline-color: var(--error-color);
+  box-shadow: 0 0 0 3px rgba(176, 0, 32, 0.15);
 }
 
-.button:disabled {
-  background-color: #a0a0a0;
-  cursor: not-allowed;
+.error_message {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.login_link {
+  text-align: center;
+  margin-top: 1rem;
+  color: var(--text-color-light);
+}
+
+.login_link a {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: none;
 }

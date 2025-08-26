@@ -1,0 +1,44 @@
+.rsvp_page {
+  width: 100%;
+  max-width: 500px;
+  margin: 3rem auto;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.rsvp_page h1 {
+  color: #28a745;
+}
+
+.rsvp_page h2 {
+  margin-bottom: 0.5rem;
+}
+
+.rsvp_page p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.rsvp_page form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rsvp_page label {
+  text-align: left;
+  font-weight: bold;
+}
+
+.rsvp_page input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1.1rem;
+}
