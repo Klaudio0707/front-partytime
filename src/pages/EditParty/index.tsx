@@ -21,6 +21,7 @@ const EditParty = () => {
       try {
         const response = await apiFetch.get(`/parties/${id}`);
         const party = response.data;
+        console.log(party.date)
         setTitle(party.title);
         setDescription(party.description);
         setBudget(party.budget);

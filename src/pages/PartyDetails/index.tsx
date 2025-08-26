@@ -4,6 +4,7 @@ import apiFetch from '../../api/config';
 import useToast from '../../hooks/useToast';
 import styles from './PartyDetails.module.css';
 import AddServiceForm from '../AddService'; // Verifique se o caminho está correto
+import AddGuestForm from '../../components/GuestForm';
 
 // Interfaces para tipagem dos dados
 interface IService {
@@ -11,7 +12,12 @@ interface IService {
   name: string;
   price: string; // Vem como string da API para manter a precisão
 }
-
+interface IGuest {
+  id: string;
+  name: string;
+  email: string;
+  status: string; // Ex: 'Pendente', 'Enviado'
+}
 interface IParty {
   id: string;
   title: string;
@@ -19,6 +25,7 @@ interface IParty {
   date: string; // Adicionamos a data
   budget: string; // Vem como string da API
   services: IService[];
+  guests: IGuest[]; 
 }
 
 const PartyDetails = () => {
@@ -89,7 +96,10 @@ const PartyDetails = () => {
     }
   };
 
-  // --- Renderização ---
+  const handleGuestAdded = () => {
+    fetchParty(); // Simplesmente recarrega os dados da festa
+  };
+
   if (loading) {
     return <p className={styles.loading_text}>Carregando festa...</p>;
   }
@@ -100,6 +110,7 @@ const PartyDetails = () => {
 
   return (
     <div className={styles.party_details}>
+      
       <Link to="/dashboard" className={styles.back_link}>&larr; Voltar para o Dashboard</Link>
       
       <header className={styles.party_header}>
@@ -153,6 +164,32 @@ const PartyDetails = () => {
         <Link to={`/party/edit/${id}`} className="btn">Editar Festa</Link>
         
         <button onClick={handleDeleteParty} className={styles.delete_party_btn}>Excluir Festa</button>
+      </div>
+      <div className={styles.guests_container}>
+        <h2>Convidados:</h2>
+        
+        {/* Formulário para adicionar novos convidados */}
+        <AddGuestForm partyId={id!} onGuestAdded={handleGuestAdded} />
+        
+        {/* Lista de convidados já adicionados */}
+        <h3>Lista de Convidados:</h3>
+        {party.guests.length > 0 ? (
+          <ul className={styles.guest_list}>
+            {party.guests.map((guest) => (
+              <li key={guest.id} className={styles.guest_item}>
+                <div className={styles.guest_info}>
+                  <span>{guest.name}</span>
+                  <small>{guest.email}</small>
+                </div>
+                <span className={`${styles.status_badge} ${styles[guest.status.toLowerCase()]}`}>
+                  {guest.status}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Nenhum convidado adicionado ainda.</p>
+        )}
       </div>
     </div>
   );

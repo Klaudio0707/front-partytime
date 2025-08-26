@@ -101,3 +101,67 @@
 .negative_balance p {
   color: #dc3545; /* Vermelho para indicar perigo/saldo estourado */
 }
+.guests_container {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.guests_container h2 {
+  margin-bottom: 1rem;
+}
+.guests_container h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.guest_list {
+  list-style: none;
+  padding: 0;
+}
+
+.guest_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.guest_info {
+  display: flex;
+  flex-direction: column;
+}
+
+.guest_info span {
+  font-weight: bold;
+}
+
+.guest_info small {
+  color: #777;
+}
+
+.status_badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.status_badge.pendente {
+  background-color: #ffc107; /* Amarelo */
+  color: #333;
+}
+.status_badge.enviado {
+  background-color: #17a2b8; /* Azul */
+}
+.status_badge.confirmado {
+  background-color: #28a745; /* Verde */
+}
+.status_badge.recusado {
+  background-color: #dc3545; /* Vermelho */
+}

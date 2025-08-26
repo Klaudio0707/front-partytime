@@ -21,6 +21,7 @@ const Dashboard = () => {
       try {
         const response = await apiFetch.get('/parties/my-parties');
         setParties(response.data);
+        console.log(response.data)
       } catch (error) {
         useToast('Erro ao carregar suas festas.', 'error');
       } finally {
