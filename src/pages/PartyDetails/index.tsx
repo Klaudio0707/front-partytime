@@ -150,11 +150,11 @@ const PartyDetails = () => {
         <p className={styles.party_description}>{party.description}</p>
       </header>
       
-      <div className={styles.financial_summary}>
+      <section className={styles.financial_summary}>
         {/* ... (painel financeiro) ... */}
-      </div>
+      </section>
       
-      <div className={styles.services_container}>
+      <section className={styles.section_container}>
         <h2>Serviços Contratados:</h2>
         <AddServiceForm partyId={id!} onServiceAdded={handleServiceAdded} />
         {party.services.length > 0 ? (
@@ -173,9 +173,9 @@ const PartyDetails = () => {
             ))}
           </ul>
         ) : <p>Nenhum serviço adicionado ainda.</p>}
-      </div>
+      </section>
 
-      <div className={styles.guests_container}>
+      <section className={styles.section_container}>
         <h2>Convidados:</h2>
         <AddGuestForm partyId={id!} onGuestAdded={handleGuestAdded} />
         <h3>Lista de Convidados ({party.guests.length})</h3>
@@ -196,14 +196,15 @@ const PartyDetails = () => {
             ))}
           </ul>
         ) : <p>Nenhum convidado adicionado ainda.</p>}
-      </div>
+      </section>
 
-      <div className={styles.actions_container}>
+      <section className={styles.section_container}>
         <h2>Ações da Festa:</h2>
-        <Link to={`/party/edit/${party.id}`} className="btn">Editar Festa</Link>
-        {/* Usa a classe global 'btn' e a de módulo para cor específica */}
-        <button onClick={handleDeleteParty} className={`btn ${styles.delete_party_btn}`}>Excluir Festa</button>
-      </div>
+        <div className={styles.item_actions}>
+          <Link to={`/party/edit/${party.id}`} className="btn">Editar Festa</Link>
+          <button onClick={handleDeleteParty} className={`btn ${styles.delete_party_btn}`}>Excluir Festa</button>
+        </div>
+      </section>
     </div>
   );
 };

@@ -27,7 +27,7 @@ const Header = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to={`profile/${user.id}`}>
+                <NavLink to={`profile/`}>
                   <span className={styles.welcome_text}>Olá, {user.username}!</span>
                 </NavLink>
               </li>

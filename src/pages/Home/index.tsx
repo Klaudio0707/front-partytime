@@ -1,26 +1,25 @@
-import styles from './Home.module.css'
+import styles from './Home.module.css';
 import api from '../../api/config'; 
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useToast from '../../hooks/useToast';
 import type { IEvento } from '../../types/IEvento';
-// import BtnCreatePartie from '../../components/BtnCreatePartie';
+import { useAuth } from '../../context/AuthContext'; // 👈 1. Importe o useAuth
 
 const Home = () => {
   const [eventos, setEventos] = useState<IEvento[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth(); // 👈 2. Pegue o usuário do contexto
+  const navigate = useNavigate(); // 👈 3. Pegue o hook de navegação
 
   useEffect(() => {
+    // A lógica de busca continua a mesma, pois o endpoint agora é público
     const fetchEventos = async () => {
       try {
         const response = await api.get('/parties');
-        const err = response.data?.error
-        console.log(err)
-        const data = Array.isArray(response.data) ? response.data : []; // Garante que seja um array
-        console.log(data)
-        setEventos(data);
+        setEventos(Array.isArray(response.data) ? response.data : []);
       } catch (error: any) {
-        const errorMessage = error.response?.data?.message || 'Erro ao carregar eventos, tente novamente';
-        useToast(errorMessage, 'warning');
+        useToast(error.response?.data?.message || 'Erro ao carregar eventos.', 'warning');
       } finally {
         setLoading(false);
       }
@@ -28,10 +27,21 @@ const Home = () => {
     fetchEventos();
   }, []);
 
+  // 👇 4. Crie a função que lida com o clique
+  const handlePartyClick = (partyId: string) => {
+    if (user) {
+      // Se o usuário estiver logado, vá para os detalhes da festa
+      navigate(`/party/${partyId}`);
+    } else {
+      // Se não estiver logado, mostre um aviso e redirecione para o login
+      useToast('Você precisa estar logado para gerenciar uma festa.', 'info');
+      navigate('/login');
+    }
+  };
+
   return (
     <main className={styles.container}>
-      <h2 className={styles.title_home}>PartyTime</h2>
-      {/* <BtnCreatePartie/> */}
+      <h2 className={styles.title_home}>Bem-vindo ao PartyTime!</h2>
       <section className={styles.container_eventos}>
         <h4 className={styles.title_eventos}>Eventos em Destaques</h4>
         {loading ? (
@@ -39,18 +49,19 @@ const Home = () => {
         ) : (
           <ul className={styles.eventos_grid}>
             {eventos.map((evento) => (
-              <li className={styles.evento} key={evento.id || evento.title}> 
-                <h5 className={styles.titleEvento}>Título: {evento.title || 'Título não disponível'}</h5>
-                <p className={styles.budgetEvento}>R${evento.budget || 'Orçamento não informado'}</p>
-                <p className={styles.descriptionEvento}>Descrição: {evento.description || 'Descrição não disponível'}</p>
-                <p className={styles.authorEvento}>Autor: {evento.user?.username || 'Autor desconhecido'}</p>
-                {evento.image ? (
-                  <a href={evento.image} target="_blank" rel="noopener noreferrer">
-                    <img className={styles.imageEvento} src={evento.image} alt={evento.description || 'Imagem da festa'} />
-                  </a>
-                ) : (
-                  <p>Imagem não disponível</p>
-                )}
+              // 👇 5. Transforme o 'li' em um elemento clicável
+              <li 
+                className={styles.evento} 
+                key={evento.id} 
+                onClick={() => handlePartyClick(evento.id)}
+              > 
+                
+                <h5>{evento.title}</h5>
+                <p>{evento.description}</p>
+                <p>Orçamento: {evento.budget ? `R$ ${evento.budget}` : 'Não definido'}</p>
+                <span>Data: {new Date(evento.date).toLocaleDateString()}</span>
+                <p>{evento.author}</p>
+                <img src={evento.image} alt="imagem do evento" />
               </li>
             ))}
           </ul>

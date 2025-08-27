@@ -5,11 +5,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2.5rem;
-  background-color: var(--surface-color); /* Usa a variável */
-  border-bottom: 1px solid var(--border-color); /* Usa a variável */
-  position: sticky; /* Deixa o header fixo no topo */
-  top: 0;
-  z-index: 100;
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+
 }
 
 .brand {

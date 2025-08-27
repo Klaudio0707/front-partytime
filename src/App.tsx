@@ -9,10 +9,12 @@ function App() {
   return (
    <AuthProvider>
       <ToastContainer />
+      <div className="app_container">
       <Header />
       <main className="container">
         <Outlet />
       </main>
+      </div>
     </AuthProvider>
   );
 }

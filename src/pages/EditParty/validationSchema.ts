@@ -1,8 +1,7 @@
-// validationSchema.ts
-import { z } from "zod";
+// src/pages/EditParty/validationSchema.ts
+import { z } from 'zod';
 
-// validationSchema.ts
-export const partySchema = z.object({
+export const editPartySchema = z.object({
   title: z.string().min(3, { message: "O título precisa ter no mínimo 3 caracteres." }),
   description: z.string().min(10, { message: "A descrição precisa ter no mínimo 10 caracteres." }),
   date: z.string().refine((date) => new Date(date) >= new Date(), {
@@ -15,5 +14,4 @@ export const partySchema = z.object({
   }),
 });
 
-export type PartyFormData = z.infer<typeof partySchema>; // ✅ só 1 tipo
-
+export type EditPartyFormData = z.infer<typeof editPartySchema>;

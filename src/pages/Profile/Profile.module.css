@@ -1,0 +1,90 @@
+.profile_page {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background-color: var(--surface-color);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  
+  .profile_page h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 2rem;
+  }
+  
+  .email_display {
+    text-align: center;
+    color: var(--text-color-light);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    word-break: break-all;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .form h3, .danger_zone h3 {
+    margin: 0 0 0.5rem;
+  }
+  
+  .form p, .danger_zone p {
+    color: var(--text-color-light);
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .input_group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .input_field {
+    padding: 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: var(--font-family);
+  }
+  .input_field:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.15);
+  }
+  .input_error {
+    border-color: var(--error-color);
+  }
+  .input_error:focus {
+    box-shadow: 0 0 0 3px rgba(176, 0, 32, 0.15);
+  }
+  .error_message {
+    color: var(--error-color);
+    font-size: 0.875rem;
+  }
+  
+  .danger_zone {
+    text-align: center;
+  }
+  
+  .delete_account_btn {
+    background-color: var(--error-color);
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .delete_account_btn:hover {
+    background-color: #9a0007; /* Um vermelho mais escuro */
+  }

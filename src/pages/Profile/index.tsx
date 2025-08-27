@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { profileSchema, type ProfileFormData } from './validationSchema'; // 👈 Importa as regras e o tipo
+import { profileSchema, type ProfileFormData } from './validationSchema';
 import { useAuth } from '../../context/AuthContext';
 import apiFetch from '../../api/config';
 import useToast from '../../hooks/useToast';
@@ -8,8 +8,6 @@ import styles from './Profile.module.css';
 
 const Profile = () => {
   const { user, logout } = useAuth();
-  
-  // 👇 Conecta o react-hook-form com nossas regras e tipos
   const { 
     register, 
     handleSubmit, 
@@ -22,9 +20,7 @@ const Profile = () => {
     }
   });
 
-  // 👇 A função agora recebe 'data' com o tipo correto
   const onUpdateProfile = async (data: ProfileFormData) => {
-    // Filtra para enviar apenas os campos que foram realmente alterados
     const updateData = Object.fromEntries(
       Object.entries(data).filter(([_, value]) => value && value.length > 0)
     );
@@ -35,9 +31,9 @@ const Profile = () => {
     }
 
     try {
-      await apiFetch.patch('/users/patch/profile', updateData);
-      useToast('Perfil atualizado com sucesso! Por favor, faça login novamente para que as alterações tenham efeito.', 'success');
-      logout(); // Força o logout para o usuário logar com os novos dados
+      await apiFetch.patch('/users/profile', updateData);
+      useToast('Perfil atualizado com sucesso! Por favor, faça login novamente.', 'success');
+      logout();
     } catch (error: any) {
       useToast(error.response?.data?.message || 'Erro ao atualizar perfil.', 'error');
     }
@@ -46,9 +42,9 @@ const Profile = () => {
   const onDeleteAccount = async () => {
     if (window.confirm('ATENÇÃO: Esta ação é irreversível. Tem certeza que deseja excluir sua conta e todos os seus dados?')) {
       try {
-        await apiFetch.delete('/users/delete/profile');
+        await apiFetch.delete('/users/profile');
         useToast('Sua conta foi excluída com sucesso.', 'success');
-        logout(); // Limpa a sessão e redireciona
+        logout();
       } catch (error: any) {
         useToast(error.response?.data?.message || 'Erro ao excluir a conta.', 'error');
       }
@@ -63,27 +59,28 @@ const Profile = () => {
       <form onSubmit={handleSubmit(onUpdateProfile)} className={styles.form}>
         <h3>Atualizar Dados</h3>
         <p>Preencha apenas os campos que deseja alterar.</p>
-        <label>
-          <span>Nome de Usuário:</span>
+        <div className={styles.input_group}>
+          <label htmlFor="username">Nome de Usuário:</label>
           <input 
+            id="username"
             type="text" 
             className={`${styles.input_field} ${errors.username ? styles.input_error : ''}`}
             {...register('username')} 
           />
-          {/* 👇 Mensagem de erro agora é exibida */}
           {errors.username && <p className={styles.error_message}>{errors.username.message}</p>}
-        </label>
-        <label>
-          <span>Nova Senha:</span>
+        </div>
+        <div className={styles.input_group}>
+          <label htmlFor="password">Nova Senha:</label>
           <input 
+            id="password"
             type="password" 
             placeholder="Mínimo de 6 caracteres" 
             className={`${styles.input_field} ${errors.password ? styles.input_error : ''}`}
             {...register('password')} 
           />
-          {/* 👇 Mensagem de erro agora é exibida */}
           {errors.password && <p className={styles.error_message}>{errors.password.message}</p>}
-        </label>
+        </div>
+        {/* O botão principal ainda usa a classe global 'btn' para consistência */}
         <button type="submit" className="btn" disabled={isSubmitting}>
           {isSubmitting ? 'Salvando...' : 'Salvar Alterações'}
         </button>

@@ -1,76 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
-// CSS e Componente Principal
 import './index.css'; 
 import App from './App.tsx';
 
-
-// Páginas e Componentes
-import Home from './pages/Home';
-import Login from './components/Login';
-import Register from './components/Register';
-import Dashboard from './pages/DashBoard';       // 👈 1. Importe o Dashboard
-import CreateParty from './pages/CreateParties'; // Corrigi o caminho de 'CreateParties'
-import PartyDetails from './pages/PartyDetails';
-import EditParty from './pages/EditParty';
-import ProtectedRoute from './components/ProtectedRoute'; // 👈 2. Importe a Rota Protegida
-import EditService from './pages/EditService/index.tsx';
+import Home from './pages/Home/index.tsx';
+import Login from './components/Login/index.tsx';
+import Register from './components/Register/index.tsx';
 import RsvpPage from './pages/RsvpPage/index.tsx';
-import Profile from './pages/Profile';
+import Dashboard from './pages/DashBoard/index.tsx';
+import ProtectedRoute from './components/ProtectedRoute/index.tsx';
+import CreateParty from './pages/CreateParties/index.tsx';
+import PartyDetails from './pages/PartyDetails/index.tsx';
+import EditParty from './pages/EditParty/index.tsx';
+import EditService from './pages/EditService/index.tsx';
+import Profile from './pages/Profile/index.tsx';
+// ... todos os seus imports de página
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />, // O layout principal (com Header, Footer)
+    element: <App />,
     children: [
-  
-      {
-        path: '/',
-        element: <Home />,
-      },
-      {
-        path: '/login',
-        element: <Login />,
-      },
-      {
-        path: '/register',
-        element: <Register />,
-      },
-      
-    
-      {
-        element: <ProtectedRoute />, // 👈 3. Nosso "segurança" fica aqui
-        children: [
-          {
-            path: '/dashboard',     // Nova rota para o painel do usuário
-            element: <Dashboard />,
-          },
-          {
-            path: '/party/new',     // Corrigido de 'partie' para 'party'
-            element: <CreateParty />,
-          },
-          {
-            path: '/party/:id',
-            element: <PartyDetails />,
-          },
-          {
-            path:'/party/edit/:id',
-            element:<EditParty />,
-          },
-          {
-            path: '/service/edit/:id',
-            element: <EditService />,
-          },
-           {
-             path: '/rsvp/:token',
-             element: <RsvpPage />,
-           },{
+      // --- ROTAS PÚBLICAS ---
+      { path: '/', element: <Home /> },
+      { path: '/login', element: <Login /> },
+      { path: '/register', element: <Register /> },
+      { path: '/rsvp/:token', element: <RsvpPage /> }, 
 
-             path: '/profile',
-              element: <Profile />,
-            },
+      // --- ROTAS PROTEGIDAS ---
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: '/dashboard', element: <Dashboard /> },
+          { path: '/party/new', element: <CreateParty /> },
+          { path: '/party/:id', element: <PartyDetails /> },
+          { path: '/party/edit/:id', element: <EditParty /> },
+          { path: '/service/edit/:id', element: <EditService /> },
+          { path: '/profile', element: <Profile /> }, 
         ],
       },
     ],
@@ -79,7 +46,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-
-    <RouterProvider router={router} />
+   
+      <RouterProvider router={router} />
+    
   </React.StrictMode>
 );

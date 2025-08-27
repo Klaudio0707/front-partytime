@@ -32,6 +32,20 @@
   --toastify-color-progress-error: var(--toastify-icon-color-error);
 }
 
+html, body, #root {
+  height: 100%;
+}
+
+.app_container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%; /* Ocupa pelo menos 100% da altura do seu pai (body) */
+}
+
+main.container {
+  flex-grow: 1; /* ✨ A mágica acontece aqui! */
+}
+
 body {
   margin: 0;
   font-family: var(--font-family);

@@ -1,9 +1,9 @@
 .party_details {
   background-color: var(--surface-color);
-  padding: 2.5rem;
+  padding: 2rem 2.5rem;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
   margin-top: 2rem;
+  border: 1px solid var(--border-color);
 }
 
 .back_link {
@@ -12,22 +12,38 @@
   color: var(--primary-color);
   text-decoration: none;
   font-weight: 600;
+  transition: opacity 0.2s;
+}
+.back_link:hover {
+  opacity: 0.8;
 }
 
 .party_header h1 {
   margin-top: 0;
   margin-bottom: 0.5rem;
 }
-
 .party_date, .party_description {
   color: var(--text-color-light);
   margin-top: 0;
 }
+.party_description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
 
-.financial_summary, .services_container, .guests_container, .actions_container {
+.section_container {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border-color);
+}
+
+.section_container h2 {
+  margin: 0 0 1.5rem;
+}
+.section_container h3 {
+  margin: 2rem 0 1rem;
+  font-size: 1.2rem;
+  color: var(--text-color);
 }
 
 .financial_summary {
@@ -42,21 +58,17 @@
   border-radius: 8px;
   text-align: center;
 }
-
 .summary_card h3 {
   margin: 0 0 0.5rem;
   font-size: 1rem;
   color: var(--text-color-light);
-  font-weight: 500;
 }
-
 .summary_card p {
   margin: 0;
   font-size: 1.8rem;
   font-weight: bold;
   color: var(--primary-color);
 }
-
 .negative_balance p {
   color: var(--error-color);
 }
@@ -70,29 +82,28 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0.5rem;
+  padding: 1rem;
   border-bottom: 1px solid var(--border-color);
 }
-
-.item_info {
-  display: flex;
-  flex-direction: column;
+.item:last-child {
+  border-bottom: none;
 }
 
 .item_info span {
   font-weight: 500;
 }
-
 .item_info small {
   color: var(--text-color-light);
+  font-size: 0.9rem;
 }
 
 .item_actions {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 1rem;
 }
 
-.edit_btn, .delete_btn, .whatsapp_btn {
+.action_btn {
   padding: 0.4rem 0.8rem;
   border-radius: 5px;
   border: 1px solid transparent;
@@ -101,8 +112,8 @@
   cursor: pointer;
   transition: all 0.2s;
   font-size: 0.8rem;
+  text-decoration: none;
 }
-
 .edit_btn {
   color: var(--primary-color);
   border-color: var(--primary-color);
@@ -111,7 +122,6 @@
   background-color: var(--primary-color);
   color: white;
 }
-
 .delete_btn {
   color: var(--error-color);
   border-color: var(--error-color);
@@ -120,7 +130,6 @@
   background-color: var(--error-color);
   color: white;
 }
-
 .whatsapp_btn {
   background-color: #25D366;
   color: white;
@@ -132,9 +141,9 @@
 }
 
 .status_badge {
-  padding: 0.3rem 0.6rem;
+  padding: 0.3rem 0.7rem;
   border-radius: 12px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: bold;
   color: #fff;
 }
@@ -144,9 +153,7 @@
 .confirmado { background-color: #28a745; }
 .recusado { background-color: var(--error-color); }
 
-
 .delete_party_btn {
-  /* Usa a classe global .btn, mas podemos adicionar uma cor específica */
   background-color: var(--error-color);
 }
 .delete_party_btn:hover {

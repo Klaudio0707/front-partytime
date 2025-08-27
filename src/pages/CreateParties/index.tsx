@@ -1,28 +1,21 @@
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { partySchema, type PartyFormData } from './validationSchema'; // Importa nossas regras
+import { partySchema, type PartyFormData } from './validationSchema'; // 👈 agora só 1 tipo
 import apiFetch from '../../api/config';
 import useToast from '../../hooks/useToast';
 import styles from './CreateParty.module.css';
 
 const CreateParty = () => {
   const navigate = useNavigate();
-  
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors, isSubmitting } 
-  } = useForm<PartyFormData>({
-    resolver: zodResolver(partySchema) as any // Conecta o formulário com nossas regras
+
+  // useForm tipado direto com PartyFormData
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<PartyFormData>({
+    resolver: zodResolver(partySchema),
   });
 
-  // A lógica de envio agora recebe os dados já validados
-  const onSubmit = async (data: PartyFormData) => {
-    const partyData = {
-      ...data,
-      services: [], // Adiciona a propriedade de serviços que o backend espera
-    };
+  const onSubmit: SubmitHandler<PartyFormData> = async (data) => {
+    const partyData = { ...data, services: [] };
 
     try {
       const response = await apiFetch.post('/parties', partyData);
@@ -80,7 +73,7 @@ const CreateParty = () => {
             min="0" 
             step="0.01" 
             className={`${styles.input} ${errors.budget ? styles.input_error : ''}`}
-            {...register('budget')} 
+            {...register('budget', { valueAsNumber: true })} // 👈 garante number
           />
           {errors.budget && <p className={styles.error_message}>{errors.budget.message}</p>}
         </label>
@@ -107,7 +100,6 @@ const CreateParty = () => {
           {errors.password && <p className={styles.error_message}>{errors.password.message}</p>}
         </label>
         
-        {/* Botão usa a classe global 'btn' */}
         <button type="submit" className="btn" disabled={isSubmitting}>
           {isSubmitting ? 'Criando festa...' : 'Criar Festa'}
         </button>

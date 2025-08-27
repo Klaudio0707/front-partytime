@@ -1,20 +1,20 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'; // Ajuste o caminho se necessário
 
 const ProtectedRoute = () => {
-  const { user, loading } = useAuth(); // Pegamos o usuário e o estado de carregamento do contexto
+  const { user, loading } = useAuth();
+  const location = useLocation(); // Pega a localização atual
 
-  // Enquanto a autenticação está sendo verificada, mostramos uma mensagem
   if (loading) {
     return <div>Carregando...</div>;
   }
 
-  // Se a verificação terminou e NÃO há usuário, redireciona para o login
+  // Se não há usuário, redireciona para o login,
+  // mas guarda a página que ele tentou acessar no 'state'.
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Se há um usuário, renderiza a página solicitada (usando o <Outlet />)
   return <Outlet />;
 };
 
