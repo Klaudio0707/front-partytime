@@ -53,8 +53,7 @@ const RsvpPage = () => {
             placeholder="Digite a senha aqui"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+        />
         </label>
         <button type="submit" className="btn" disabled={isSubmitting}>
           {isSubmitting ? 'Confirmando...' : 'Confirmar Presença'}

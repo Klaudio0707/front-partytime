@@ -1,14 +1,18 @@
 .add_guest_form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    background-color: #fcfcfc;
-  }
-  
-  .add_guest_form p {
-    margin: 0 0 0.5rem;
-    font-weight: bold;
-  }
+  display: flex;
+  align-items: flex-start; /* Alinha os itens no topo */
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--background-color);
+}
+
+.input_container {
+  flex-grow: 1; /* Faz os inputs ocuparem o espaço disponível */
+}
+
+/* O botão usa a classe global .btn, mas podemos ajustar sua margem */
+.submit_button {
+  margin-top: 1.75rem; /* Alinha o botão com os inputs */
+}

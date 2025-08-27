@@ -85,3 +85,14 @@
   font-weight: 600;
   text-decoration: none;
 }
+.login_link {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--text-color-light);
+}
+
+.login_link a {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: none;
+}

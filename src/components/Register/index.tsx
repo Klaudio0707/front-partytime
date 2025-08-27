@@ -32,64 +32,36 @@ const Register = () => {
   };
 
   return (
-     <section className={styles.register_page}>
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-        <h1 className={styles.title}>Crie sua Conta</h1>
-        <p className={styles.subtitle}>É rápido e fácil para começar a planejar.</p>
+     <section className="form_page_container">
+      <form onSubmit={handleSubmit(onSubmit)} className="form_card">
+        <h1 className="form_title">Crie sua Conta</h1>
+        <p className="form_subtitle">É rápido e fácil para começar a planear.</p>
         
-        <div className={styles.input_group}>
-          <label htmlFor="username">Nome de Usuário</label>
-          <input 
-            id="username"
-            type="text" 
-            placeholder="Como devemos te chamar?" 
-            className={errors.username ? styles.input_error : ''}
-            {...register('username')} 
-          />
-          {errors.username && <p className={styles.error_message}>{errors.username.message}</p>}
+        <div className="input_group">
+          <label htmlFor="username">Nome de Utilizador</label>
+          <input id="username" type="text" className={`input_field ${errors.username ? 'input_error' : ''}`} {...register('username')} />
+          {errors.username && <p className="error_message">{errors.username.message}</p>}
         </div>
-
-        <div className={styles.input_group}>
+        <div className="input_group">
           <label htmlFor="email">E-mail</label>
-          <input 
-            id="email"
-            type="email" 
-            placeholder="seu-email@exemplo.com" 
-            className={errors.email ? styles.input_error : ''}
-            {...register('email')} 
-          />
-          {errors.email && <p className={styles.error_message}>{errors.email.message}</p>}
+          <input id="email" type="email" className={`input_field ${errors.email ? 'input_error' : ''}`} {...register('email')} />
+          {errors.email && <p className="error_message">{errors.email.message}</p>}
         </div>
-
-        <div className={styles.input_group}>
+        <div className="input_group">
           <label htmlFor="password">Senha</label>
-          <input 
-            id="password"
-            type="password" 
-            placeholder="Mínimo de 6 caracteres" 
-            className={errors.password ? styles.input_error : ''}
-            {...register('password')} 
-          />
-          {errors.password && <p className={styles.error_message}>{errors.password.message}</p>}
+          <input id="password" type="password" className={`input_field ${errors.password ? 'input_error' : ''}`} {...register('password')} />
+          {errors.password && <p className="error_message">{errors.password.message}</p>}
         </div>
-
-        <div className={styles.input_group}>
+        <div className="input_group">
           <label htmlFor="confirmPassword">Confirme sua Senha</label>
-          <input 
-            id="confirmPassword"
-            type="password" 
-            placeholder="Repita a senha" 
-            className={errors.confirmPassword ? styles.input_error : ''}
-            {...register('confirmPassword')} 
-          />
-          {errors.confirmPassword && <p className={styles.error_message}>{errors.confirmPassword.message}</p>}
+          <input id="confirmPassword" type="password" className={`input_field ${errors.confirmPassword ? 'input_error' : ''}`} {...register('confirmPassword')} />
+          {errors.confirmPassword && <p className="error_message">{errors.confirmPassword.message}</p>}
         </div>
         
         <button type="submit" className="btn" disabled={isSubmitting}>
-          {isSubmitting ? 'Criando conta...' : 'Finalizar Cadastro'}
+          {isSubmitting ? 'A criar...' : 'Finalizar Cadastro'}
         </button>
       </form>
-
       <p className={styles.login_link}>
         Já tem uma conta? <Link to="/login">Faça o login</Link>
       </p>

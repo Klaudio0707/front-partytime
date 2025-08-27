@@ -1,76 +1,103 @@
+.home_page {
+  width: 100%;
+}
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-  }
-  
-  /* Título principal */
- .title_home{
-    text-align: center;
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  /* Seção de eventos */
-  .container_eventos {
-    margin-top: 20px;
-  }
-  
-  .title_eventos{
-    font-size: 1.5rem;
-    color: #555;
-    margin-bottom: 15px;
-  }
-  
-  /* Lista de eventos */
-  styles.container {
-    list-style: none;
-    padding: 0;
-  }
-  
-.eventos_grid {
+/* Secção de Destaque no Topo */
+.hero {
+  padding: 4rem 2rem;
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  margin: 0 0 1rem;
+  color: var(--primary-color);
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  color: var(--text-color-light);
+  line-height: 1.6;
+}
+
+/* Secção da Lista de Festas */
+.parties_section {
+  padding: 3rem 0; /* Apenas espaçamento vertical */
+  text-align: center;
+}
+
+.parties_section h2 {
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+.parties_grid {
   display: grid;
-  /* A mágica principal acontece aqui: 3 colunas de tamanho igual */
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 1.5rem; /* Cria um espaçamento perfeito entre os itens */
-  
-  /* Apenas para resetar o estilo padrão da lista */
+  /* Cria colunas responsivas: elas tentam ter 350px, mas se ajustam */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 5rem;
   list-style: none;
   padding: 0;
+  margin: 0 10px;
+ 
 }
 
-/* Estilo para cada item da lista (opcional, mas bom para design) */
-.eventos_grid li {
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  background-color: #fff;
+/* Card Individual de cada Festa */
+.party_card {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  text-align: left;
+  box-shadow: 0 5px 8px rgba(0,0,0,0.05);
+  cursor: pointer;
+  overflow: hidden; /* Garante que a imagem não vaze para fora das bordas arredondadas */
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-/* Título do evento */
-.titleEvento{
-    font-size: 1.2rem;
-    color: #222;
-    margin-bottom: 10px;
-  }
-  
-  /* Parágrafos de informações */
-  li p {
-    font-size: 1rem;
-    color: #666;
-    margin: 5px 0;
-  }
-  
-  /* Imagem do evento */
-  li img {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    border-radius: 8px;
-    margin-top: 10px;
-  }
+.party_card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.party_card img {
+  width: 100%;
+  height: 100px; /* Altura fixa para todas as imagens */
+  object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card_content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; 
+}
+
+.card_content h3 {
+  margin: 0 0 1rem;
+  font-size: 1.3rem;
+}
+
+.card_content p {
+  margin: 0.25rem 0;
+  color: var(--text-color-light);
+  font-size: 0.9rem;
+}
+
+.card_link_text {
+  margin-top: auto; /* Empurra para o fundo do card */
+  padding-top: 1rem;
+  text-align: right;
+  font-weight: 600;
+  color: var(--primary-color);
+  text-decoration: none;
+}

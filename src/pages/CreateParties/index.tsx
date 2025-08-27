@@ -6,16 +6,31 @@ import apiFetch from '../../api/config';
 import useToast from '../../hooks/useToast';
 import styles from './CreateParty.module.css';
 
+
 const CreateParty = () => {
   const navigate = useNavigate();
-
-  // useForm tipado direto com PartyFormData
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<PartyFormData>({
+ const { 
+    register, 
+    handleSubmit, 
+    formState: { errors, isSubmitting } 
+  } = useForm<PartyFormData>({
     resolver: zodResolver(partySchema),
+    // Podemos definir um valor padrão para a hora aqui
+    defaultValues: {
+      time: '19:00',
+    },
   });
 
   const onSubmit: SubmitHandler<PartyFormData> = async (data) => {
-    const partyData = { ...data, services: [] };
+    // Combina a data e a hora do formulário numa única string ISO 8601
+    // que o backend e o banco de dados entendem perfeitamente.
+    const combinedDateTime = new Date(`${data.date}T${data.time}`);
+
+    const partyData = {
+      ...data,
+      date: combinedDateTime.toISOString(), // ✅ Envia a data completa e formatada
+      services: [],
+    };
 
     try {
       const response = await apiFetch.post('/parties', partyData);
@@ -27,51 +42,52 @@ const CreateParty = () => {
       useToast(errorMessage, 'error');
     }
   };
-
   return (
     <div className={styles.create_party_page}>
       <h2>Crie sua Próxima Festa!</h2>
       <p>Preencha os detalhes abaixo para começar a planejar.</p>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <label className={styles.label}>
           <span>Título da Festa:</span>
-          <input 
-            type="text" 
-            placeholder="Ex: Aniversário da Maria" 
+          <input
+            type="text"
+            placeholder="Ex: Aniversário da Maria"
             className={`${styles.input} ${errors.title ? styles.input_error : ''}`}
-            {...register('title')} 
+            {...register('title')}
           />
           {errors.title && <p className={styles.error_message}>{errors.title.message}</p>}
         </label>
-        
-        <label className={styles.label}>
-          <span>Data da Festa:</span>
-          <input 
-            type="date" 
-            className={`${styles.input} ${errors.date ? styles.input_error : ''}`}
-            {...register('date')} 
-          />
-          {errors.date && <p className={styles.error_message}>{errors.date.message}</p>}
-        </label>
+
+        <div className="input_group">
+          <label htmlFor="date">Data da Festa:</label>
+          <input id="date" type="date" className={`input_field ${errors.date ? 'input_error' : ''}`} {...register('date')} />
+          {errors.date && <p className="error_message">{errors.date.message}</p>}
+        </div>
+
+        <div className="input_group">
+          <label htmlFor="time">Hora da Festa:</label>
+          <input id="time" type="time" className={`input_field ${errors.time ? 'input_error' : ''}`} {...register('time')} />
+          {errors.time && <p className="error_message">{errors.time.message}</p>}
+        </div>
 
         <label className={styles.label}>
           <span>Descrição:</span>
-          <textarea 
-            placeholder="Conte mais sobre a festa, tema, etc." 
+          <textarea
+            placeholder="Conte mais sobre a festa, tema, etc."
             className={`${styles.textarea} ${errors.description ? styles.input_error : ''}`}
-            {...register('description')} 
+            {...register('description')}
           />
           {errors.description && <p className={styles.error_message}>{errors.description.message}</p>}
         </label>
 
         <label className={styles.label}>
           <span>Orçamento (R$):</span>
-          <input 
-            type="number" 
-            placeholder="Ex: 1500.00" 
-            min="0" 
-            step="0.01" 
+          <input
+            type="number"
+            placeholder="Ex: 1500.00"
+            min="0"
+            step="0.01"
             className={`${styles.input} ${errors.budget ? styles.input_error : ''}`}
             {...register('budget', { valueAsNumber: true })} // 👈 garante number
           />
@@ -80,26 +96,26 @@ const CreateParty = () => {
 
         <label className={styles.label}>
           <span>URL da Imagem de Capa (Opcional):</span>
-          <input 
-            type="url" 
+          <input
+            type="url"
             placeholder="https://exemplo.com/imagem.jpg"
             className={`${styles.input} ${errors.image ? styles.input_error : ''}`}
-            {...register('image')} 
+            {...register('image')}
           />
           {errors.image && <p className={styles.error_message}>{errors.image.message}</p>}
         </label>
 
         <label className={styles.label}>
           <span>Senha da Festa (Opcional):</span>
-          <input 
-            type="password" 
-            placeholder="Mínimo de 4 caracteres" 
+          <input
+            type="password"
+            placeholder="Mínimo de 4 caracteres"
             className={`${styles.input} ${errors.password ? styles.input_error : ''}`}
-            {...register('password')} 
+            {...register('password')}
           />
           {errors.password && <p className={styles.error_message}>{errors.password.message}</p>}
         </label>
-        
+
         <button type="submit" className="btn" disabled={isSubmitting}>
           {isSubmitting ? 'Criando festa...' : 'Criar Festa'}
         </button>

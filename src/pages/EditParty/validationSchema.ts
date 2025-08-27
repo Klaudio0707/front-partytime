@@ -7,6 +7,7 @@ export const editPartySchema = z.object({
   date: z.string().refine((date) => new Date(date) >= new Date(), {
     message: "A data da festa não pode ser no passado.",
   }),
+   time: z.string().regex(/^\d{2}:\d{2}$/, { message: "Por favor, insira uma hora válida." }),
   budget: z.number().positive({ message: "O orçamento deve ser maior que zero." }), // 👈 direto number
   image: z.string().url({ message: "Por favor, insira uma URL válida." }).optional().or(z.literal("")),
   password: z.string().refine((val) => val.length === 0 || val.length >= 4, {

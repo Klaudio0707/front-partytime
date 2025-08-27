@@ -118,10 +118,9 @@ const PartyDetails = () => {
     }
     if (!party) return;
 
-    // 👇 A LÓGICA DO LINK FOI ATUALIZADA AQUI 👇
     const rsvpUrl = `http://localhost:5173/rsvp/${guest.rsvpToken}`; // Use a URL do seu frontend
     const message = `Olá ${guest.name}! Você foi convidado para a festa "${party.title}". Por favor, confirme sua presença e veja os detalhes no link: ${rsvpUrl}`;
-
+    
     const phoneNumber = `55${guest.phone.replace(/\D/g, '')}`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
@@ -145,13 +144,37 @@ const PartyDetails = () => {
       <Link to="/dashboard" className={styles.back_link}>&larr; Voltar para o Dashboard</Link>
       
       <header className={styles.party_header}>
-        <h1>{party.title}</h1>
-        <p className={styles.party_date}>Data: {new Date(party.date).toLocaleDateString()}</p>
-        <p className={styles.party_description}>{party.description}</p>
-      </header>
+  <h1>{party.title}</h1>
+  <p className={styles.party_date}>
+    <strong>Data:</strong>
+
+    {party.date 
+      ? new Date(party.date).toLocaleString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      : 'Data não definida'
+    }
+  </p>
+  <p className={styles.party_description}>{party.description}</p>
+</header>
       
       <section className={styles.financial_summary}>
-        {/* ... (painel financeiro) ... */}
+       <div className={styles.summary_card}>
+          <h3>Orçamento Total</h3>
+          <p>{parseFloat(party.budget || '0').toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+        </div>
+        <div className={styles.summary_card}>
+          <h3>Total Gasto</h3>
+          <p>{financialSummary.spentBudget.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+        </div>
+        <div className={`${styles.summary_card} ${financialSummary.remainingBudget < 0 ? styles.negative_balance : ''}`}>
+          <h3>Saldo Restante</h3>
+          <p>{financialSummary.remainingBudget.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+        </div>
       </section>
       
       <section className={styles.section_container}>
@@ -189,8 +212,8 @@ const PartyDetails = () => {
                 </div>
                 <div className={styles.item_actions}>
                   <span className={`${styles.status_badge} ${styles[guest.status.toLowerCase()]}`}>{guest.status}</span>
-                  {guest.phone && <button onClick={() => handleWhatsAppInvite(guest)} className={styles.whatsapp_btn}>WhatsApp</button>}
-                  <button onClick={() => handleDeleteGuest(guest.id)} className={styles.delete_btn}>Remover</button>
+                  {guest.phone && <button onClick={() => handleWhatsAppInvite(guest)} className={`${styles.action_btn} ${styles.whatsapp_btn}`}>WhatsApp</button>}
+                  <button onClick={() => handleDeleteGuest(guest.id)} className={`${styles.action_btn} ${styles.delete_btn}`}>Remover</button>
                 </div>
               </li>
             ))}
