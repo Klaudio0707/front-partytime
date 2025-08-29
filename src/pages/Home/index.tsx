@@ -9,11 +9,11 @@ import { useAuth } from '../../context/AuthContext'; // 👈 1. Importe o useAut
 const Home = () => {
   const [parties, setParties] = useState<IEvento[]>([]);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth(); // 👈 2. Pegue o usuário do contexto
-  const navigate = useNavigate(); // 👈 3. Pegue o hook de navegação
+  const { user } = useAuth(); 
+  const navigate = useNavigate(); 
 
   useEffect(() => {
-    // A lógica de busca continua a mesma, pois o endpoint agora é público
+ 
     const fetchParties = async () => {
       try {
         const response = await api.get('/parties');
@@ -43,7 +43,7 @@ const Home = () => {
    <div className={styles.home_page}>
       <section className={styles.hero}>
         <h1>PartyTime</h1>
-        <p>O seu gestor de festas pessoal. Planeie, orçamente e convide, tudo num só lugar.</p>
+        <p>O seu gestor de festas pessoal. Planeje, orçamente e convide, tudo num só lugar.</p>
         {!user && (
           <Link to="/register" className="btn">Comece a Planear Gratuitamente</Link>
         )}
@@ -57,14 +57,15 @@ const Home = () => {
           <ul className={styles.parties_grid}>
             {parties.map((party) => (
               <li key={party.id} className={styles.party_card} onClick={() => handlePartyClick(party.id)}>
-                {/* Renderiza a imagem apenas se ela existir */}
+        
                 {party.image && (
                   <img src={party.image} alt={party.title} />
                 )}
                 <div className={styles.card_content}>
                   <h3>{party.title}</h3>
                   <p><strong>Autor:</strong> {party.user?.username || 'Anónimo'}</p>
-                  <p><strong>Data da Festa:</strong> {party.date ? new Date(party.date).toLocaleDateString() : 'A definir'}</p>
+                  <p><strong>Data e Hora da Festa: </strong> 
+                  {`${new Date(party.date).toLocaleDateString('pt-BR')} às ${new Date(party.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`}</p>
                   <span className={styles.card_link_text}>
                     Ver Mais →
                   </span>

@@ -81,7 +81,7 @@ const Dashboard = () => {
     {parties.map((party) => (
       <Link to={`/party/${party.id}`} key={party.id} className={styles.party_card_link}>
         <div className={styles.party_card}>
-          {/* 👇 1. RENDERIZA A IMAGEM NO TOPO, APENAS SE ELA EXISTIR 👇 */}
+       
           {party.image && (
             <img src={party.image} alt={party.title} />
           )}

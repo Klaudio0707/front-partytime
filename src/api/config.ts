@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const apiFetch = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://backend-partytime.onrender.com",
   withCredentials: true,
 });
 
