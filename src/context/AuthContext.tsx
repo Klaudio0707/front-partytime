@@ -19,18 +19,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        //  Cria um controlador para a nossa requisição
+        const controller = new AbortController();
+        const signal = controller.signal;
+      
         const checkUserStatus = async () => {
-            try {
-                const response = await apiFetch.get("/auth/profile");
-                setUser(response.data);
-            } catch (error) {
-                setUser(null); 
-            } finally {
-                setLoading(false);
+          try {
+            // Passa o 'sinal' para o Axios. Se o sinal for 'abortado', a requisição é cancelada.
+            const response = await apiFetch.get("/auth/profile", { signal });
+            setUser(response.data);
+          } catch (error: any) {
+            // Se o erro for de cancelamento, nós o ignoramos.
+            if (error.name !== 'CanceledError') {
+              setUser(null);
             }
+          } finally {
+            // Garantimos que o loading termine apenas se a requisição não for cancelada
+            if (!signal.aborted) {
+              setLoading(false);
+            }
+          }
         };
         checkUserStatus();
-    }, []);
+      
+        //  A FUNÇÃO DE LIMPEZA: Será executada se o componente for desmontado
+        return () => {
+          controller.abort(); // Cancela a requisição pendente
+        };
+      }, []); // O array vazio está correto aqui
 
     const login = async (loginData: any) => {
         try {
