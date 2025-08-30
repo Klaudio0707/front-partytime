@@ -119,40 +119,45 @@ const PartyDetails = () => {
     }
     if (!party) return;
     
-
-    const rsvpUrl = `https://front-partytime.vercel.app/rsvp/${guest.rsvpToken}`; // Use a URL do seu frontend
-    const partyDate = new Date(party.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+    const rsvpUrl = `https://front-partytime.vercel.app/rsvp/${guest.rsvpToken}`;
+    const partyDate = new Date(party.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' });
     const partyTime = new Date(party.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-    let confirmationInstructions = `Por favor, confirme sua presença respondendo através do link abaixo:`;
+  
 
- 
-  if (party.password) {
-    confirmationInstructions += `\n\n*A senha da festa é:* \`${party.password}\``;
-  }
-    const message =
-      `🎉 *Você está convidado(a)!* 🎉
-
-    Olá ${guest.name},
-
-    Venha celebrar conosco na festa:
-    ✨ *${party.title}* ✨
-
-    _${party.description}_
+    let confirmationInstructions: string;
+  
+    if (party.password) {
+      confirmationInstructions = 
+  `Por favor, confirme sua presença no link abaixo.
+  *A senha da festa é:* \`${party.password}\``;
+    } else {
+      // Cenário 2: A festa NÃO tem senha
+      confirmationInstructions = 
+  `Por favor, confirme sua presença - não tem senha. Click no link abaixo:`;
+    }
+  
+    const message = 
+  `🎉 *Você está convidado(a)!* 🎉
+  
+  Olá ${guest.name},
+  
+  Venha celebrar conosco na festa:
+  ✨ *${party.title}* ✨
+  
+  _${party.description}_
+  
+  🗓️ *Data:* ${partyDate}
+  ⏰ *Hora:* ${partyTime}
+  
+  ${confirmationInstructions}
+  ${rsvpUrl}
+  
+  Esperamos por você! 🎈`;
     
-    🗓️ *Data:* ${partyDate}
-    ⏰ *Hora:* ${partyTime}
-
-
-    ${confirmationInstructions}
-    ${rsvpUrl}
-    
-    Por favor, confirme sua presença respondendo através do link abaixo:
-    
-    ${rsvpUrl}`;
     const phoneNumber = `55${guest.phone.replace(/\D/g, '')}`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
+  
     window.open(whatsappUrl, '_blank');
   };
   const handleGuestAdded = () => {
