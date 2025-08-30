@@ -3,29 +3,31 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import apiFetch from '../../api/config';
 import useToast from '../../hooks/useToast';
 import styles from './PartyDetails.module.css';
-import AddServiceForm from '../AddService'; // Verifique se o caminho está correto
+import AddServiceForm from '../AddService';
 import AddGuestForm from '../../components/GuestForm';
+import { useAuth } from '../../context/AuthContext';
 
-// Interfaces para tipagem dos dados
+
 interface IService {
   id: string;
   name: string;
-  price: string; // Vem como string da API para manter a precisão
+  price: string;
 }
 interface IGuest {
   id: string;
   name: string;
   rsvpToken?: string;
   phone?: string;
-  status: string; // Ex: 'Pendente', 'Enviado'
+  status: string;
 }
 interface IParty {
   id: string;
   title: string;
   description: string;
-  password?: string; 
-  date: string; // Adicionamos a data
-  budget: string; // Vem como string da API
+  password?: string;
+  date: string;
+  budget: string;
+  userId: string;
   services: IService[];
   guests: IGuest[];
 }
@@ -35,8 +37,8 @@ const PartyDetails = () => {
   const [party, setParty] = useState<IParty | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { user } = useAuth(); 
 
-  // Função para buscar/recarregar os dados da festa
   const fetchParty = useCallback(async () => {
     setLoading(true);
     try {
@@ -44,18 +46,21 @@ const PartyDetails = () => {
       setParty(response.data);
     } catch (error) {
       useToast('Erro ao carregar os detalhes da festa.', 'error');
-      navigate('/dashboard'); // Se der erro (ex: festa não existe), volta pro dashboard
+      navigate('/dashboard');
     } finally {
       setLoading(false);
     }
-  }, [id, navigate]);
+  }, [id, navigate, useToast]);
 
-  // Busca os dados iniciais quando o componente é montado
   useEffect(() => {
     fetchParty();
   }, [fetchParty]);
 
-  // Calcula o resumo financeiro, memorizado para melhor performance
+  const isOwner = useMemo(() => {
+    if (!user || !party) return false;
+    return user.id === party.userId;
+  }, [user, party]);
+
   const financialSummary = useMemo(() => {
     if (!party) {
       return { spentBudget: 0, remainingBudget: 0 };
@@ -68,16 +73,15 @@ const PartyDetails = () => {
   }, [party]);
 
   // --- Handlers de Ações ---
-  const handleServiceAdded = () => {
-    fetchParty(); // Recarrega os dados após adicionar um serviço
-  };
+  const handleServiceAdded = () => fetchParty();
+  const handleGuestAdded = () => fetchParty();
 
   const handleDeleteService = async (serviceId: string) => {
     if (window.confirm('Tem certeza que deseja excluir este serviço?')) {
       try {
         await apiFetch.delete(`/services/${serviceId}`);
         useToast('Serviço excluído com sucesso!', 'success');
-        fetchParty(); // Recarrega os dados para atualizar a lista
+        fetchParty();
       } catch (error: any) {
         const msg = error.response?.data?.message || 'Erro ao excluir serviço.';
         useToast(msg, 'error');
@@ -90,24 +94,26 @@ const PartyDetails = () => {
       try {
         await apiFetch.delete(`/parties/${id}`);
         useToast('Festa excluída com sucesso!', 'success');
-        navigate('/dashboard'); // Redireciona após excluir a festa
+        navigate('/dashboard');
       } catch (error: any) {
         const msg = error.response?.data?.message || 'Erro ao excluir a festa.';
         useToast(msg, 'error');
       }
     }
   };
+
   const handleDeleteGuest = async (guestId: string) => {
     if (window.confirm('Tem certeza que deseja remover este convidado da lista?')) {
       try {
         await apiFetch.delete(`/guests/${guestId}`);
         useToast('Convidado removido com sucesso!', 'success');
-        fetchParty(); // Recarrega os dados da festa
+        fetchParty();
       } catch (error: any) {
         useToast(error.response?.data?.message || 'Erro ao remover convidado.', 'error');
       }
     }
   };
+  
   const handleWhatsAppInvite = (guest: IGuest) => {
     if (!guest.phone) {
       useToast('Este convidado não tem um número de telefone cadastrado.', 'warning');
@@ -123,45 +129,33 @@ const PartyDetails = () => {
     const partyDate = new Date(party.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' });
     const partyTime = new Date(party.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   
-
-    let confirmationInstructions: string;
-  
-    if (party.password) {
-      confirmationInstructions = 
-  `Por favor, confirme sua presença no link abaixo.
-  *A senha da festa é:* \`${party.password}\``;
-    } else {
-      // Cenário 2: A festa NÃO tem senha
-      confirmationInstructions = 
-  `Por favor, confirme sua presença - não tem senha. Click no link abaixo:`;
-    }
+    const confirmationInstructions = party.password
+      ? `Por favor, confirme sua presença no link abaixo.\n*A senha da festa é:* \`${party.password}\``
+      : `Por favor, confirme sua presença clicando no link abaixo:`;
   
     const message = 
-  `🎉 *Você está convidado(a)!* 🎉
-  
-  Olá ${guest.name},
-  
-  Venha celebrar conosco na festa:
-  ✨ *${party.title}* ✨
-  
-  _${party.description}_
-  
-  🗓️ *Data:* ${partyDate}
-  ⏰ *Hora:* ${partyTime}
-  
-  ${confirmationInstructions}
-  ${rsvpUrl}
-  
-  Esperamos por você! 🎈`;
+`🎉 *Você está convidado(a)!* 🎉
+
+Olá ${guest.name},
+
+Venha celebrar conosco na festa:
+✨ *${party.title}* ✨
+
+_${party.description}_
+
+🗓️ *Data:* ${partyDate}
+⏰ *Hora:* ${partyTime}
+
+${confirmationInstructions}
+${rsvpUrl}
+
+Esperamos por você! 🎈`;
     
     const phoneNumber = `55${guest.phone.replace(/\D/g, '')}`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
   
     window.open(whatsappUrl, '_blank');
-  };
-  const handleGuestAdded = () => {
-    fetchParty(); // Simplesmente recarrega os dados da festa
   };
 
   if (loading) {
@@ -180,87 +174,94 @@ const PartyDetails = () => {
         <h1>{party.title}</h1>
         <p className={styles.party_date}>
           <strong>Data:</strong>
-
           {party.date
             ? new Date(party.date).toLocaleString('pt-BR', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            })
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })
             : 'Data não definida'
           }
         </p>
         <p className={styles.party_description}>{party.description}</p>
       </header>
 
-      <section className={styles.financial_summary}>
-        <div className={styles.summary_card}>
-          <h3>Orçamento Total</h3>
-          <p>{parseFloat(party.budget || '0').toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-        </div>
-        <div className={styles.summary_card}>
-          <h3>Total Gasto</h3>
-          <p>{financialSummary.spentBudget.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-        </div>
-        <div className={`${styles.summary_card} ${financialSummary.remainingBudget < 0 ? styles.negative_balance : ''}`}>
-          <h3>Saldo Restante</h3>
-          <p>{financialSummary.remainingBudget.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-        </div>
-      </section>
+      {isOwner ? (
+        <>
+          <section className={styles.financial_summary}>
+            <div className={styles.summary_card}>
+              <h3>Orçamento Total</h3>
+              <p>{parseFloat(party.budget || '0').toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+            </div>
+            <div className={styles.summary_card}>
+              <h3>Total Gasto</h3>
+              <p>{financialSummary.spentBudget.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+            </div>
+            <div className={`${styles.summary_card} ${financialSummary.remainingBudget < 0 ? styles.negative_balance : ''}`}>
+              <h3>Saldo Restante</h3>
+              <p>{financialSummary.remainingBudget.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+            </div>
+          </section>
 
-      <section className={styles.section_container}>
-        <h2>Serviços Contratados:</h2>
-        <AddServiceForm partyId={id!} onServiceAdded={handleServiceAdded} />
-        {party.services.length > 0 ? (
-          <ul className={styles.item_list}>
-            {party.services.map((service) => (
-              <li key={service.id} className={styles.item}>
-                <div className={styles.item_info}>
-                  <span>{service.name}</span>
-                  <small>{parseFloat(service.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</small>
-                </div>
-                <div className={styles.item_actions}>
-                  <Link to={`/service/edit/${service.id}`} className={styles.edit_btn}>Editar</Link>
-                  <button onClick={() => handleDeleteService(service.id)} className={styles.delete_btn}>Excluir</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : <p>Nenhum serviço adicionado ainda.</p>}
-      </section>
+          <section className={styles.section_container}>
+            <h2>Serviços Contratados:</h2>
+            <AddServiceForm partyId={id!} onServiceAdded={handleServiceAdded} />
+            {party.services.length > 0 ? (
+              <ul className={styles.item_list}>
+                {party.services.map((service) => (
+                  <li key={service.id} className={styles.item}>
+                    <div className={styles.item_info}>
+                      <span>{service.name}</span>
+                      <small>{parseFloat(service.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</small>
+                    </div>
+                    <div className={styles.item_actions}>
+                      <Link to={`/service/edit/${service.id}`} className={styles.edit_btn}>Editar</Link>
+                      <button onClick={() => handleDeleteService(service.id)} className={styles.delete_btn}>Excluir</button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : <p>Nenhum serviço adicionado ainda.</p>}
+          </section>
 
-      <section className={styles.section_container}>
-        <h2>Convidados:</h2>
-        <AddGuestForm partyId={id!} onGuestAdded={handleGuestAdded} />
-        <h3>Lista de Convidados ({party.guests.length})</h3>
-        {party.guests.length > 0 ? (
-          <ul className={styles.item_list}>
-            {party.guests.map((guest) => (
-              <li key={guest.id} className={styles.item}>
-                <div className={styles.item_info}>
-                  <span>{guest.name} </span>
-                  <small>{guest.phone}</small>
-                </div>
-                <div className={styles.item_actions}>
-                  <span className={`${styles.status_badge} ${styles[guest.status.toLowerCase()]}`}>{guest.status}</span>
-                  {guest.phone && <button onClick={() => handleWhatsAppInvite(guest)} className={`${styles.action_btn} ${styles.whatsapp_btn}`}>WhatsApp</button>}
-                  <button onClick={() => handleDeleteGuest(guest.id)} className={`${styles.action_btn} ${styles.delete_btn}`}>Remover</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : <p>Nenhum convidado adicionado ainda.</p>}
-      </section>
+          <section className={styles.section_container}>
+            <h2>Convidados:</h2>
+            <AddGuestForm partyId={id!} onGuestAdded={handleGuestAdded} />
+            <h3>Lista de Convidados ({party.guests.length})</h3>
+            {party.guests.length > 0 ? (
+              <ul className={styles.item_list}>
+                {party.guests.map((guest) => (
+                  <li key={guest.id} className={styles.item}>
+                    <div className={styles.item_info}>
+                      <span>{guest.name} </span>
+                      <small>{guest.phone}</small>
+                    </div>
+                    <div className={styles.item_actions}>
+                      <span className={`${styles.status_badge} ${styles[guest.status.toLowerCase()]}`}>{guest.status}</span>
+                      {guest.phone && <button onClick={() => handleWhatsAppInvite(guest)} className={`${styles.action_btn} ${styles.whatsapp_btn}`}>WhatsApp</button>}
+                      <button onClick={() => handleDeleteGuest(guest.id)} className={`${styles.action_btn} ${styles.delete_btn}`}>Remover</button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : <p>Nenhum convidado adicionado ainda.</p>}
+          </section>
 
-      <section className={styles.section_container}>
-        <h2>Ações da Festa:</h2>
-        <div className={styles.item_actions}>
-          <Link to={`/party/edit/${party.id}`} className="btn">Editar Festa</Link>
-          <button onClick={handleDeleteParty} className={`btn ${styles.delete_party_btn}`}>Excluir Festa</button>
+          <section className={styles.section_container}>
+            <h2>Ações da Festa:</h2>
+            <div className={styles.item_actions}>
+              <Link to={`/party/edit/${party.id}`} className="btn">Editar Festa</Link>
+              <button onClick={handleDeleteParty} className={`btn ${styles.delete_party_btn}`}>Excluir Festa</button>
+            </div>
+          </section>
+        </>
+      ) : (
+        <div className={styles.public_view}>
+          <p>Você está visualizando os detalhes desta festa. Apenas o criador pode gerenciá-la.</p>
         </div>
-      </section>
+      )}
     </div>
   );
 };
