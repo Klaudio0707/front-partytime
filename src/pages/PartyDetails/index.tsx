@@ -23,6 +23,7 @@ interface IParty {
   id: string;
   title: string;
   description: string;
+  password?: string; 
   date: string; // Adicionamos a data
   budget: string; // Vem como string da API
   services: IService[];
@@ -117,10 +118,37 @@ const PartyDetails = () => {
       return;
     }
     if (!party) return;
+    
 
     const rsvpUrl = `https://front-partytime.vercel.app/rsvp/${guest.rsvpToken}`; // Use a URL do seu frontend
-    const message = `Olá ${guest.name}! Você foi convidado para a festa "${party.title}". Por favor, confirme sua presença e veja os detalhes no link: ${rsvpUrl}`;
+    const partyDate = new Date(party.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+    const partyTime = new Date(party.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    let confirmationInstructions = `Por favor, confirme sua presença respondendo através do link abaixo:`;
+
+ 
+  if (party.password) {
+    confirmationInstructions += `\n\n*A senha da festa é:* \`${party.password}\``;
+  }
+    const message =
+      `🎉 *Você está convidado(a)!* 🎉
+
+    Olá ${guest.name},
+
+    Venha celebrar conosco na festa:
+    ✨ *${party.title}* ✨
+
+    _${party.description}_
     
+    🗓️ *Data:* ${partyDate}
+    ⏰ *Hora:* ${partyTime}
+
+
+    ${confirmationInstructions}
+    ${rsvpUrl}
+    
+    Por favor, confirme sua presença respondendo através do link abaixo:
+    
+    ${rsvpUrl}`;
     const phoneNumber = `55${guest.phone.replace(/\D/g, '')}`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
@@ -142,28 +170,28 @@ const PartyDetails = () => {
   return (
     <div className={styles.party_details}>
       <Link to="/dashboard" className={styles.back_link}>&larr; Voltar para o Dashboard</Link>
-      
-      <header className={styles.party_header}>
-  <h1>{party.title}</h1>
-  <p className={styles.party_date}>
-    <strong>Data:</strong>
 
-    {party.date 
-      ? new Date(party.date).toLocaleString('pt-BR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        })
-      : 'Data não definida'
-    }
-  </p>
-  <p className={styles.party_description}>{party.description}</p>
-</header>
-      
+      <header className={styles.party_header}>
+        <h1>{party.title}</h1>
+        <p className={styles.party_date}>
+          <strong>Data:</strong>
+
+          {party.date
+            ? new Date(party.date).toLocaleString('pt-BR', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })
+            : 'Data não definida'
+          }
+        </p>
+        <p className={styles.party_description}>{party.description}</p>
+      </header>
+
       <section className={styles.financial_summary}>
-       <div className={styles.summary_card}>
+        <div className={styles.summary_card}>
           <h3>Orçamento Total</h3>
           <p>{parseFloat(party.budget || '0').toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
         </div>
@@ -176,7 +204,7 @@ const PartyDetails = () => {
           <p>{financialSummary.remainingBudget.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
         </div>
       </section>
-      
+
       <section className={styles.section_container}>
         <h2>Serviços Contratados:</h2>
         <AddServiceForm partyId={id!} onServiceAdded={handleServiceAdded} />
@@ -207,7 +235,7 @@ const PartyDetails = () => {
             {party.guests.map((guest) => (
               <li key={guest.id} className={styles.item}>
                 <div className={styles.item_info}>
-                  <span>{guest.name}</span>
+                  <span>{guest.name} </span>
                   <small>{guest.phone}</small>
                 </div>
                 <div className={styles.item_actions}>
