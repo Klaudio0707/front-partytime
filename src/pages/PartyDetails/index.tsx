@@ -118,7 +118,7 @@ const PartyDetails = () => {
     }
     if (!party) return;
 
-    const rsvpUrl = `http://localhost:5173/rsvp/${guest.rsvpToken}`; // Use a URL do seu frontend
+    const rsvpUrl = `https://front-partytime.vercel.app/rsvp/${guest.rsvpToken}`; // Use a URL do seu frontend
     const message = `Olá ${guest.name}! Você foi convidado para a festa "${party.title}". Por favor, confirme sua presença e veja os detalhes no link: ${rsvpUrl}`;
     
     const phoneNumber = `55${guest.phone.replace(/\D/g, '')}`;
