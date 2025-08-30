@@ -71,7 +71,7 @@ const AddServiceForm = ({ partyId, onServiceAdded }: AddServiceFormProps) => {
             placeholder="Ex: 500.00" 
             step="0.01"
             className={`input_field ${errors.price ? 'input_error' : ''}`}
-            {...register('price')} 
+            {...register('price', { valueAsNumber: true })} 
           />
           {errors.price && <p className="error_message">{errors.price.message}</p>}
         </div>
