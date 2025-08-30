@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { partySchema, type PartyFormData } from './validationSchema'; // 👈 agora só 1 tipo
+import { partySchema, type PartyFormData } from './validationSchema'; 
 import apiFetch from '../../api/config';
 import useToast from '../../hooks/useToast';
 import styles from './CreateParty.module.css';
@@ -15,7 +15,7 @@ const CreateParty = () => {
     formState: { errors, isSubmitting } 
   } = useForm<PartyFormData>({
     resolver: zodResolver(partySchema),
-    // Podemos definir um valor padrão para a hora aqui
+  
     defaultValues: {
       time: '19:00',
     },
@@ -28,7 +28,7 @@ const CreateParty = () => {
 
     const partyData = {
       ...data,
-      date: combinedDateTime.toISOString(), // ✅ Envia a data completa e formatada
+      date: combinedDateTime.toISOString(), 
       services: [],
     };
 
