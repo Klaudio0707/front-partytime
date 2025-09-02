@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useToast from '../../hooks/useToast';
 import type { IEvento } from '../../types/IEvento';
-import { useAuth } from '../../context/AuthContext'; // 👈 1. Importe o useAuth
+import { useAuth } from '../../context/AuthContext'; 
 
 const Home = () => {
   const [parties, setParties] = useState<IEvento[]>([]);
@@ -27,7 +27,7 @@ const Home = () => {
     fetchParties();
   }, []);
 
-  // 👇 4. Crie a função que lida com o clique
+  // 4. Crie a função que lida com o clique
   const handlePartyClick = (partyId: string) => {
     if (user) {
       // Se o usuário estiver logado, vá para os detalhes da festa
@@ -45,7 +45,7 @@ const Home = () => {
         <h1>PartyTime</h1>
         <p>O seu gestor de festas pessoal. Planeje, orçamente e convide, tudo num só lugar.</p>
         {!user && (
-          <Link to="/register" className="btn">Comece a Planear Gratuitamente</Link>
+          <Link to="/register" className="btn">Comece a Planejar  Gratuitamente</Link>
         )}
       </section>
 
