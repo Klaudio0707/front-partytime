@@ -1,4 +1,3 @@
-Organizei as informações para destacar a complexidade técnica (Full Stack, Segurança, Integrações) e facilitar a leitura por recrutadores.
 
 🎉 PartyTime
 O seu gestor de festas pessoal.
