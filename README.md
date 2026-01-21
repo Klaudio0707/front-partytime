@@ -1,69 +1,123 @@
-# React + TypeScript + Vite
+Organizei as informações para destacar a complexidade técnica (Full Stack, Segurança, Integrações) e facilitar a leitura por recrutadores.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🎉 PartyTime
+O seu gestor de festas pessoal.
 
-Currently, two official plugins are available:
+O PartyTime é uma aplicação Full-Stack completa construída para centralizar o planejamento e a gestão de eventos. Desde o controle financeiro até a gestão de convidados com RSVP inteligente, o projeto foi desenvolvido com uma arquitetura moderna, focada em segurança, boas práticas (Clean Code, DTOs) e uma excelente experiência de usuário.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+✨ Funcionalidades
+A aplicação é dividida entre uma Área Pública (Landing Page) e uma Área Privada (Dashboard de Gestão).
 
-## Expanding the ESLint configuration
+🔐 Autenticação e Segurança
+Login Seguro: Sistema de registro e login com criptografia de senha (bcrypt).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Sessão JWT via Cookie: Implementação de JSON Web Tokens armazenados em cookies HttpOnly, protegendo a aplicação contra ataques XSS.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Gestão de Perfil: O usuário pode atualizar dados cadastrais e possui controle total para exclusão de conta.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+📋 Gestão de Eventos (Festas)
+Criação Detalhada: Formulários robustos com validação front-end (Zod + React Hook Form) e back-end (DTOs + Class Validator).
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Dashboard: Visão geral com contagem de festas e resumo orçamentário.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+CRUD Completo: Criação, leitura, edição e exclusão de eventos.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+💰 Controle Financeiro
+Orçamento Dinâmico: Painel em tempo real que calcula automaticamente o Orçamento Total, Total Gasto e Saldo Restante.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Serviços: Adicione custos como DJ, Buffet ou Decoração; o sistema deduz automaticamente do orçamento disponível.
+
+🤵 Convidados & RSVP Inteligente
+Integração com WhatsApp: Geração automática de links "Click to Chat" com mensagens de convite personalizadas.
+
+Token Único de Acesso: Cada convite gera um link exclusivo e seguro para confirmação de presença.
+
+Proteção por Senha: (Opcional) Organizadores podem definir uma senha extra para acessar a página de RSVP.
+
+Notificações via E-mail: O organizador recebe um alerta via Resend API sempre que um convidado confirma presença.
+
+🚀 Stack Tecnológica
+Backend (API)
+Framework: NestJS
+
+Linguagem: TypeScript
+
+Banco de Dados: PostgreSQL (Hospedado na Neon - Serverless)
+
+ORM: Sequelize
+
+Autenticação: Passport.js & JWT (@nestjs/jwt)
+
+Validação: class-validator & class-transformer
+
+Serviços Externos: Resend (E-mail Transactional)
+
+Frontend (Client)
+Framework: React (via Vite)
+
+Roteamento: React Router DOM
+
+Formulários: React Hook Form + Zod (Schema Validation)
+
+Estilização: CSS Modules + Variáveis CSS Globais
+
+HTTP Client: Axios
+
+📁 Estrutura do Projeto
+O projeto segue uma estrutura monorepo-like para facilitar a organização:
+
+Bash
+
+PartyTime/
+├── 📂 backend/         # API NestJS
+│   ├── src/
+│   ├── .env            # Variáveis de ambiente do servidor
+│   └── package.json
+│
+└── 📂 frontend/        # Aplicação React/Vite
+    ├── src/
+    └── package.json
+🏁 Como Rodar Localmente
+Pré-requisitos
+Node.js (v18+)
+
+PostgreSQL (Local ou via Docker)
+
+1. Configuração do Backend
+Bash
+
+# Entre na pasta do backend
+cd backend
+
+# Instale as dependências
+npm install
+
+# Configure as variáveis de ambiente
+# Crie um arquivo .env na raiz de /backend e preencha:
+# DB_HOST=localhost
+# DB_USER=seu_usuario
+# DB_PASS=sua_senha
+# DB_NAME=partytime_db
+# JWT_SECRET=segredo_super_seguro
+# RESEND_API_KEY=sua_chave_resend
+
+# Rode as migrations (Sequelize)
+npx sequelize-cli db:migrate
+
+# Inicie o servidor
+npm run start:dev
+2. Configuração do Frontend
+Bash
+
+# Em outro terminal, entre na pasta do frontend
+cd frontend
+
+# Instale as dependências
+npm install
+
+# Inicie a aplicação
+npm run dev
+Acesse a aplicação em: http://localhost:5173 (ou a porta indicada pelo Vite).
+
+👨‍💻 Autor
+Desenvolvido por Cláudio Roberto.
