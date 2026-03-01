@@ -10,8 +10,6 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // ✅ CORREÇÃO 1: A variável 'from' estava em falta.
-    // Ela pega a página de onde o utilizador veio (se existir) ou define o '/dashboard' como padrão.
     const from = location.state?.from?.pathname || "/dashboard";
     
     const {
@@ -22,17 +20,13 @@ const Login = () => {
         resolver: zodResolver(loginSchema)
     });
 
-    // ✅ CORREÇÃO 2: A lógica de submissão foi ajustada.
     const onSubmit = async (data: LoginFormData) => {
         try {
-            // Primeiro, esperamos a função de login ser concluída.
             await login(data);
             
-            // Se o login for bem-sucedido (não lançar erro), nós navegamos para a página de destino.
             navigate(from, { replace: true });
         } catch (error) {
-            // O próprio método 'login' no AuthContext já lida com o toast de erro,
-            // então não precisamos de fazer nada aqui, mas o try/catch é uma boa prática.
+
             console.error("A tentativa de login falhou:", error);
         }
     };
